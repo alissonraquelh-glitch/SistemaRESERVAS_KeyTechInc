@@ -18,10 +18,9 @@ CREATE TABLE usuario (
     creado_en        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_usuario),
     UNIQUE KEY uq_usuario_id_tipo (id_usuario, tipo),
+    UNIQUE KEY ux_usuario_correo (correo),
     CONSTRAINT ck_usuario_nombre CHECK (CHAR_LENGTH(TRIM(nombre_completo)) > 0)
 ) ENGINE=InnoDB;
-
-CREATE UNIQUE INDEX ux_usuario_correo ON usuario ((LOWER(correo)));
 
 CREATE TABLE cliente (
     id_usuario           VARCHAR(36) NOT NULL,
