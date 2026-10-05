@@ -1,11 +1,11 @@
 const express = require('express');
-const Cliente = require('../models/Cliente');
+const Vehiculo = require('../models/Vehiculo');
 const createEntityController = require('../controllers/demoController');
 
 const router = express.Router();
-const controller = createEntityController(Cliente, {
-	inputFields: Cliente.createFields,
-	requiredFields: ['nombre_completo', 'telefono', 'documento_identidad'],
+const controller = createEntityController(Vehiculo, {
+  inputFields: Vehiculo.createFields,
+  requiredFields: ['placa', 'id_cliente'],
 });
 
 router.get('/', controller.list);
