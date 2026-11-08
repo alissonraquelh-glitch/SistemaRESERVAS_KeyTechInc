@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototype-V5 - Taller Bautista</title>
+    <title>Prototype-V6.4 - Taller Bautista</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -67,15 +67,22 @@
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
 
-    <!-- CABECERA PRINCIPAL (HEADER) -->
+    <!-- ================================================================= -->
+    <!-- CABECERA PRINCIPAL (HEADER)                                       -->
+    <!-- Contiene el logo y los botones de navegación entre vistas         -->
+    <!-- ================================================================= -->
     <header class="bg-bautista-dark/95 backdrop-blur-md text-white sticky top-0 z-50 shadow-xl border-b border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 
-                <!-- Logo de Taller Bautista -->
+                <!-- ================================================================= -->
+                <!-- LOGO DE TALLER BAUTISTA                                           -->
+                <!-- NOTA: Aquí se vincula la imagen del logo desde la carpeta 'src'   -->
+                <!-- Cambia 'src/logo.png' si necesitas modificar la ruta o nombre     -->
+                <!-- ================================================================= -->
                 <div class="flex items-center space-x-4 cursor-pointer group" onclick="switchView('client')">
-                    <div class="w-12 h-12 bg-gradient-to-br from-bautista-red to-bautista-darkRed rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                        <i class="fa-solid fa-wrench text-xl text-white"></i>
+                    <div class="w-16 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform p-1 overflow-hidden">
+                        <img src="src/logo.png" alt="Logo Taller Bautista" class="w-full h-full object-contain">
                     </div>
                     <div class="hidden sm:block">
                         <div class="font-black text-xl leading-tight tracking-tight text-white group-hover:text-gray-200 transition-colors">GRUPO BAUTISTA</div>
@@ -83,13 +90,13 @@
                     </div>
                 </div>
 
-                <!-- Botón de Portal Clientes (Botón de Empleados oculto para clientes) -->
+                <!-- Botón de Portal Clientes / Portal Empleados -->
                 <div class="flex items-center bg-black/50 p-1.5 rounded-2xl border border-white/10 shadow-inner">
                     <button id="btn-view-client" onclick="switchView('client')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md">
-                        <i class="fa-solid fa-globe"></i>
-                        <span>Portal Clientes</span>
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Reservar Ahora</span>
                     </button>
-                    <!-- El botón de empleados ahora está oculto en el header público -->
+                    <!-- El botón de empleados se oculta en el modo público por defecto -->
                     <button id="btn-view-employee" onclick="switchView('employee')" class="hidden px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-gray-800 text-white shadow-md hover:bg-gray-700">
                         <i class="fa-solid fa-user-gear"></i>
                         <span>Panel Interno</span>
@@ -107,11 +114,12 @@
     <main class="flex-grow">
 
         <!-- ================================================================= -->
-        <!-- VISTA 1: PORTAL DE CLIENTES (Landing y Calendario para Clientes)  -->
+        <!-- VISTA 1: PORTAL DE CLIENTES (Público general)                     -->
+        <!-- Contiene el banner, calendario de reservas, marcas y footer       -->
         <!-- ================================================================= -->
         <div id="view-client" class="block fade-in">
             
-            <!-- SECCIÓN DEL BANNER (HERO) -->
+            <!-- SECCIÓN DEL BANNER PRINCIPAL (HERO) -->
             <section class="relative min-h-[80vh] flex items-center overflow-hidden">
                 <div class="absolute inset-0 z-0">
                     <div class="absolute inset-0 bg-gray-900/70 z-10"></div> 
@@ -121,6 +129,7 @@
                 
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center py-20">
                     
+                    <!-- Textos principales del banner -->
                     <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
                         <div class="inline-flex items-center px-4 py-2 rounded-full text-xs font-bold bg-white/10 text-white border border-white/20 backdrop-blur-md shadow-glass">
                             <span class="flex h-2 w-2 relative mr-2">
@@ -136,18 +145,23 @@
                         </h1>
                         
                         <p class="text-gray-300 text-lg sm:text-xl max-w-2xl font-light leading-relaxed">
-                            Más de 48 años brindando servicio automotriz de alta precisión en El Salvador. Consulta nuestra disponibilidad en tiempo real y agenda en un solo clic.
+                            Más de 48 años brindando servicio automotriz de alta precisión. Consulta nuestra disponibilidad en tiempo real y agenda en un solo clic.
                         </p>
                         
-                        <div class="pt-4 flex justify-center lg:justify-start">
+                        <div class="pt-4 flex flex-wrap justify-center lg:justify-start gap-4">
                             <a href="#calendario-publico" class="group px-8 py-4 bg-white text-gray-900 font-extrabold rounded-2xl shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_rgba(255,255,255,0.5)] transition-all duration-300 flex items-center gap-3 transform hover:-translate-y-1">
                                 <span>Ver Horarios Disponibles</span>
                                 <i class="fa-solid fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
                             </a>
+                            <!-- Botón de ubicación en Google Maps -->
+                            <a href="https://maps.app.goo.gl/HGw3siS9M77uYrMn8" target="_blank" class="px-8 py-4 bg-bautista-red/20 text-white font-extrabold rounded-2xl border border-bautista-red/50 hover:bg-bautista-red hover:shadow-[0_0_40px_rgba(211,16,24,0.4)] transition-all duration-300 flex items-center gap-3 transform hover:-translate-y-1">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>Ubícanos (Google Maps)</span>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Tarjeta de previsualización en el banner -->
+                    <!-- Tarjeta decorativa del banner -->
                     <div class="lg:col-span-5 hidden md:block">
                         <div class="glass-panel p-8 rounded-3xl shadow-glass text-white relative overflow-hidden">
                             <div class="absolute -top-24 -right-24 w-48 h-48 bg-bautista-red rounded-full blur-[80px] opacity-50"></div>
@@ -159,7 +173,7 @@
                                     </div>
                                     <div>
                                         <h3 class="font-bold text-lg">Taller Central</h3>
-                                        <p class="text-xs text-gray-300 font-medium">San Salvador, El Salvador</p>
+                                        <p class="text-xs text-gray-300 font-medium">San Miguel, El Salvador</p>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +200,10 @@
                 </div>
             </section>
 
-            <!-- CALENDARIO PÚBLICO MEJORADO (Mañana / Tarde en 2 Columnas) -->
+            <!-- ================================================================= -->
+            <!-- SECCIÓN CALENDARIO PÚBLICO                                        -->
+            <!-- Muestra disponibilidad en 2 columnas (Mañana/Tarde)               -->
+            <!-- ================================================================= -->
             <section id="calendario-publico" class="py-24 bg-white relative">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
@@ -196,7 +213,7 @@
                         <p class="text-gray-500 mt-4 text-lg">Haz clic en un horario disponible para confirmar los detalles de tu vehículo directamente con recepción.</p>
                     </div>
 
-                    <!-- REGLAS DE ANTICIPACIÓN Y CONFIRMACIÓN VISIBLES -->
+                    <!-- Reglas y Condiciones para el cliente -->
                     <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                         <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
                             <div class="bg-blue-100 p-2 rounded-xl text-blue-600 mt-0.5">
@@ -218,15 +235,16 @@
                         </div>
                     </div>
 
+                    <!-- Buscador de Fechas del Calendario -->
                     <div class="bg-gray-50 p-6 md:p-8 rounded-3xl border border-gray-200 shadow-soft mb-12">
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                             <div class="flex items-center gap-4 bg-white p-2 pl-4 rounded-2xl border border-gray-200 shadow-sm flex-1 md:max-w-md">
                                 <label class="text-sm font-bold text-gray-700 whitespace-nowrap"><i class="fa-regular fa-calendar text-bautista-red mr-2"></i> Fecha a consultar:</label>
-                                <!-- Input donde el cliente selecciona la fecha -->
+                                <!-- Input del cliente -->
                                 <input type="date" id="public-calendar-date" onchange="renderPublicCalendar()" class="bg-gray-50 px-4 py-3 rounded-xl border border-gray-200 text-sm font-bold outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white w-full transition-all cursor-pointer">
                             </div>
                             
-                            <!-- Leyenda de colores -->
+                            <!-- Leyenda -->
                             <div class="flex flex-wrap gap-4 text-xs font-bold text-gray-600 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm">
                                 <div class="flex items-center gap-2">
                                     <span class="w-4 h-4 rounded-full bg-emerald-100 border-2 border-emerald-500"></span>
@@ -243,59 +261,64 @@
                             </div>
                         </div>
 
-                        <!-- Grid de 2 columnas principales (Izquierda: Mañana, Derecha: Tarde) -->
-                        <div id="public-calendar-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <!-- Los horarios se insertan aquí vía Javascript -->
-                        </div>
+                        <!-- Grilla donde se insertan los horarios (mañana / tarde) vía JS -->
+                        <div id="public-calendar-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8"></div>
                     </div>
 
                 </div>
             </section>
 
-            <!-- SECCIÓN DE MARCAS -->
+            <!-- ================================================================= -->
+            <!-- SECCIÓN DE MARCAS ASOCIADAS O ATENDIDAS                           -->
+            <!-- ================================================================= -->
             <section class="py-16 bg-bautista-dark text-white border-t border-white/10">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <p class="text-sm font-bold tracking-widest text-red-500 uppercase mb-8 opacity-80">Especialistas multimarca</p>
                     <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 font-black text-2xl text-gray-300 grayscale hover:grayscale-0 transition-all duration-500">
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">TOYOTA</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">NISSAN</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">HONDA</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">HYUNDAI</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">KIA</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">CHEVROLET</span>
-                        <span class="hover:text-white hover:scale-110 transition-transform cursor-default">BMW</span>
+                        <a href="https://www.toyota.com.sv" target="_blank" class="hover:text-white hover:scale-110 transition-transform">TOYOTA</a>
+                        <a href="https://www.nissanelsalvador.com" target="_blank" class="hover:text-white hover:scale-110 transition-transform">NISSAN</a>
+                        <a href="https://www.hondaelsalvador.com" target="_blank" class="hover:text-white hover:scale-110 transition-transform">HONDA</a>
+                        <a href="https://www.hyundaielsalvador.com" target="_blank" class="hover:text-white hover:scale-110 transition-transform">HYUNDAI</a>
+                        <a href="https://www.kia.com.sv" target="_blank" class="hover:text-white hover:scale-110 transition-transform">KIA</a>
+                        <a href="https://www.chevrolet.com.sv" target="_blank" class="hover:text-white hover:scale-110 transition-transform">CHEVROLET</a>
+                        <!-- Mitsubishi: Enlace agregado -->
+                        <a href="https://mitsubishi.com.sv" target="_blank" class="hover:text-white hover:scale-110 transition-transform">MITSUBISHI</a>
+                        <a href="https://suzukisv.com" target="_blank" class="hover:text-white hover:scale-110 transition-transform">SUZUKI</a>
+                        <a href="https://isuzusv.com" target="_blank" class="hover:text-white hover:scale-110 transition-transform">ISUZU</a>
                     </div>
                 </div>
             </section>
 
-            <!-- PIE DE PÁGINA (FOOTER) -->
+            <!-- ================================================================= -->
+            <!-- PIE DE PÁGINA (FOOTER)                                            -->
+            <!-- Contiene información de contacto y accesos ocultos                -->
+            <!-- ================================================================= -->
             <footer class="bg-[#050507] text-gray-400 py-16 border-t-4 border-bautista-red text-sm relative overflow-hidden">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 relative z-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
                     <div>
+                        <!-- LOGO EN PIE DE PÁGINA -->
+                        <!-- NOTA: Referencia del logo apuntando a 'src/logo.png' -->
                         <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 bg-bautista-red rounded-lg flex items-center justify-center text-white">
-                                <i class="fa-solid fa-wrench"></i>
+                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow overflow-hidden p-1">
+                                <img src="src/logo.png" alt="Logo" class="w-full h-full object-contain">
                             </div>
                             <div class="font-black text-white text-xl">GRUPO BAUTISTA</div>
                         </div>
-                        <p class="text-gray-500 mb-6 leading-relaxed">Servicios automotrices de alta precisión en El Salvador desde 1978. Especialistas en mecánica general, diagnósticos y flotillas.</p>
+                        <p class="text-gray-500 mb-6 leading-relaxed">Servicios automotrices de alta precisión. Especialistas en mecánica general, diagnósticos y flotillas.</p>
                         <p class="text-xs font-bold text-gray-600 flex items-center gap-2">
-                            &copy; 2026 Grupo Bautista - BookIt Engine v5.0
-                            <!-- Botón oculto/sutil para administradores -->
+                            &copy; 2026 Grupo Bautista - BookIt Engine v6.2
+                            <!-- Botón de candado: Acceso Administrativo secundario -->
                             <i class="fa-solid fa-lock text-gray-800 hover:text-gray-400 cursor-pointer transition-colors" title="Acceso Administrativo" onclick="switchView('employee')"></i>
                         </p>
                     </div>
                     <div>
                         <div class="font-bold text-white text-lg mb-6">Contactos de Taller</div>
+                        <!-- Modificado: PBX ahora comparte el mismo número propio que WhatsApp para coincidir en solicitudes -->
                         <ul class="space-y-4 text-sm font-medium">
-                            <li class="flex items-center group"><i class="fa-solid fa-phone text-bautista-red mr-3 bg-red-950/50 p-2 rounded-lg group-hover:bg-bautista-red group-hover:text-white transition-colors"></i> PBX: +503 2200-0000</li>
-                            <li class="flex items-center group"><i class="fa-solid fa-brands fa-whatsapp text-emerald-500 mr-3 bg-emerald-950/50 p-2 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors"></i> WhatsApp: +503 7000-0000</li>
-                            <li class="flex items-center group"><i class="fa-solid fa-location-dot text-bautista-red mr-3 bg-red-950/50 p-2 rounded-lg group-hover:bg-bautista-red group-hover:text-white transition-colors"></i> San Salvador, El Salvador</li>
+                            <li class="flex items-center group"><i class="fa-solid fa-phone text-bautista-red mr-3 bg-red-950/50 p-2 rounded-lg group-hover:bg-bautista-red group-hover:text-white transition-colors"></i> PBX: +503 7873-0667</li>
+                            <li class="flex items-center group"><i class="fa-solid fa-brands fa-whatsapp text-emerald-500 mr-3 bg-emerald-950/50 p-2 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors"></i> WhatsApp: +503 7873 0667</li>
+                            <li class="flex items-center group"><i class="fa-solid fa-location-dot text-bautista-red mr-3 bg-red-950/50 p-2 rounded-lg group-hover:bg-bautista-red group-hover:text-white transition-colors"></i> San Miguel, El Salvador</li>
                         </ul>
-                    </div>
-                    <div>
-                        <div class="font-bold text-white text-lg mb-6">Plataforma Operativa</div>
-                        <p class="text-gray-500 leading-relaxed mb-4">El panel de empleados gestiona la ocupación en tiempo real utilizando flujos de trabajo Kanban y control de capacidad anti-cruces.</p>
                     </div>
                 </div>
             </footer>
@@ -303,11 +326,12 @@
         </div>
 
         <!-- ================================================================= -->
-        <!-- VISTA 2: PANEL DE EMPLEADOS (Secretaría, Jefe de Taller, Admin)   -->
+        <!-- VISTA 2: PANEL PRIVADO DE EMPLEADOS                               -->
+        <!-- Accesible unicamente mediante login validado                      -->
         <!-- ================================================================= -->
         <div id="view-employee" class="hidden fade-in bg-gray-50 min-h-screen pb-20">
             
-            <!-- Barra superior del panel de empleados -->
+            <!-- Barra superior del panel de empleados (Navegación de Roles) -->
             <div class="bg-white shadow-sm border-b border-gray-200 sticky top-20 z-40">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     
@@ -316,12 +340,12 @@
                             <i class="fa-solid fa-laptop-code text-xl"></i>
                         </div>
                         <div>
-                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider">BookIt Engine V5</div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider">BookIt Engine V6.2</div>
                             <div class="text-xl font-black text-gray-900">Panel Operativo Central</div>
                         </div>
                     </div>
 
-                    <!-- Pestañas para cambiar de ROL (Secretaría, Jefe, Admin) -->
+                    <!-- Pestañas para cambiar de ROL (Su visibilidad se controla por el RBAC en JS) -->
                     <div class="flex items-center bg-gray-100 p-1.5 rounded-2xl border border-gray-200 overflow-x-auto">
                         <button id="role-btn-secretaria" onclick="switchRole('secretaria')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md whitespace-nowrap">
                             <i class="fa-solid fa-headset"></i>
@@ -343,13 +367,12 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
                 <!-- ------------------------------------------------------------- -->
-                <!-- CONTENIDO DEL ROL 1: SECRETARÍA (Tabla de Citas)              -->
+                <!-- CONTENIDO DEL ROL: SECRETARÍA                                 -->
+                <!-- Tabla general de citas, KPIs y registro manual                -->
                 <!-- ------------------------------------------------------------- -->
                 <div id="role-content-secretaria" class="block space-y-8">
-                    
-                    <!-- Tarjetas de Estadísticas (KPIs) -->
+                    <!-- KPIs -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-                        <!-- KPI Totales -->
                         <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-soft flex items-center justify-between group hover:border-blue-200 transition-colors">
                             <div>
                                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Citas Totales</div>
@@ -357,7 +380,6 @@
                             </div>
                             <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center font-bold text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-calendar-days"></i></div>
                         </div>
-                        <!-- KPI Pendientes -->
                         <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-soft flex items-center justify-between group hover:border-amber-200 transition-colors">
                             <div>
                                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Pendientes</div>
@@ -365,7 +387,6 @@
                             </div>
                             <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center font-bold text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-clock"></i></div>
                         </div>
-                        <!-- KPI En Taller -->
                         <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-soft flex items-center justify-between group hover:border-indigo-200 transition-colors">
                             <div>
                                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">En Taller</div>
@@ -373,7 +394,6 @@
                             </div>
                             <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-2xl group-hover:scale-110 transition-transform"><i class="fa-solid fa-car-burst"></i></div>
                         </div>
-                        <!-- KPI Completadas -->
                         <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-soft flex items-center justify-between group hover:border-emerald-200 transition-colors">
                             <div>
                                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">Completadas</div>
@@ -383,15 +403,13 @@
                         </div>
                     </div>
 
-                    <!-- Barra de Búsqueda y Filtros -->
+                    <!-- Filtros Secretaría -->
                     <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-soft flex flex-col xl:flex-row items-center justify-between gap-4">
                         <div class="flex flex-col sm:flex-row items-center gap-3 w-full xl:w-auto flex-grow flex-wrap">
-                            <!-- Buscador -->
                             <div class="relative w-full sm:w-64">
                                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                 <input type="text" id="search-input" oninput="renderSecretaryTable()" placeholder="Buscar Placa, Cliente, DUI..." class="w-full pl-10 pr-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-medium focus:ring-2 focus:ring-bautista-red focus:bg-white outline-none transition-all">
                             </div>
-                            <!-- Filtro por Estado -->
                             <div class="relative w-full sm:w-44">
                                 <i class="fa-solid fa-filter absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                 <select id="filter-status" onchange="renderSecretaryTable()" class="w-full pl-10 pr-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-bautista-red focus:bg-white outline-none transition-all appearance-none cursor-pointer">
@@ -402,11 +420,9 @@
                                     <option value="CANCELADO">Cancelados</option>
                                 </select>
                             </div>
-                            <!-- Filtro por Fecha -->
                             <div class="relative w-full sm:w-40">
                                 <input type="date" id="sec-filter-date" onchange="renderSecretaryTable()" class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-bautista-red outline-none cursor-pointer">
                             </div>
-                            <!-- Filtro por Horario (Mañana/Tarde) -->
                             <div class="relative w-full sm:w-40">
                                 <select id="sec-filter-shift" onchange="renderSecretaryTable()" class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-bautista-red outline-none appearance-none cursor-pointer">
                                     <option value="ALL">Todos Turnos</option>
@@ -416,13 +432,14 @@
                             </div>
                         </div>
 
+                        <!-- Cita Manual -->
                         <button onclick="openManualBookingModal()" class="w-full xl:w-auto px-6 py-3 bg-gray-900 hover:bg-black text-white font-bold text-sm rounded-2xl shadow-lg shadow-gray-900/20 transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
                             <i class="fa-solid fa-plus text-sm"></i>
                             <span class="whitespace-nowrap">Cita Manual</span>
                         </button>
                     </div>
 
-                    <!-- Tabla de Citas -->
+                    <!-- Tabla -->
                     <div class="bg-white rounded-3xl border border-gray-100 shadow-soft overflow-hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-sm">
@@ -436,17 +453,15 @@
                                         <th class="px-6 py-5 text-right">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="secretary-table-body" class="divide-y divide-gray-100">
-                                    <!-- Generado dinámicamente -->
-                                </tbody>
+                                <tbody id="secretary-table-body" class="divide-y divide-gray-100"></tbody>
                             </table>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- ------------------------------------------------------------- -->
-                <!-- CONTENIDO DEL ROL 2: JEFE DE TALLER (Tablero Kanban)          -->
+                <!-- CONTENIDO DEL ROL: JEFE DE TALLER                             -->
+                <!-- Tablero Kanban para gestión de mecánicos y vehículos          -->
                 <!-- ------------------------------------------------------------- -->
                 <div id="role-content-jefe" class="hidden space-y-6">
                     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-soft flex flex-col lg:flex-row items-center justify-between gap-4">
@@ -456,11 +471,10 @@
                             </div>
                             <div>
                                 <h3 class="font-black text-gray-900 text-xl">Tablero de Operaciones</h3>
-                                <p class="text-sm text-gray-500 font-medium">Control en tiempo real del flujo de vehículos. Utiliza "Finalizar" para pases rápidos.</p>
+                                <p class="text-sm text-gray-500 font-medium">Control en tiempo real del flujo de vehículos.</p>
                             </div>
                         </div>
 
-                        <!-- Filtros para Jefe de Taller -->
                         <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
                             <div class="relative w-full sm:w-auto">
                                 <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Fecha</label>
@@ -478,8 +492,6 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                        
-                        <!-- Columna 1 -->
                         <div class="bg-gray-100/80 p-5 rounded-3xl space-y-4 min-h-[500px] border border-gray-200/60">
                             <div class="flex justify-between items-center pb-3 border-b border-gray-200 font-black text-sm text-gray-700">
                                 <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span><span>POR RECEPCIONAR</span></div>
@@ -487,8 +499,6 @@
                             </div>
                             <div id="kanban-col-1" class="space-y-4"></div>
                         </div>
-
-                        <!-- Columna 2 -->
                         <div class="bg-gray-100/80 p-5 rounded-3xl space-y-4 min-h-[500px] border border-gray-200/60">
                             <div class="flex justify-between items-center pb-3 border-b border-gray-200 font-black text-sm text-gray-700">
                                 <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>EN DIAGNÓSTICO</span></div>
@@ -496,8 +506,6 @@
                             </div>
                             <div id="kanban-col-2" class="space-y-4"></div>
                         </div>
-
-                        <!-- Columna 3 -->
                         <div class="bg-gray-100/80 p-5 rounded-3xl space-y-4 min-h-[500px] border border-gray-200/60">
                             <div class="flex justify-between items-center pb-3 border-b border-gray-200 font-black text-sm text-gray-700">
                                 <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span><span>EN REPARACIÓN</span></div>
@@ -505,24 +513,21 @@
                             </div>
                             <div id="kanban-col-3" class="space-y-4"></div>
                         </div>
-
-                        <!-- Columna 4 -->
                         <div class="bg-gray-100/80 p-5 rounded-3xl space-y-4 min-h-[500px] border border-gray-200/60">
                             <div class="flex justify-between items-center pb-3 border-b border-gray-200 font-black text-sm text-gray-700">
-                                <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>LISTO / COMPLETADO</span></div>
+                                <div class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>COMPLETADO</span></div>
                                 <span class="bg-white text-gray-800 shadow-sm px-2.5 py-1 rounded-lg text-xs" id="kanban-count-4">0</span>
                             </div>
                             <div id="kanban-col-4" class="space-y-4"></div>
                         </div>
-
                     </div>
                 </div>
 
                 <!-- ------------------------------------------------------------- -->
-                <!-- CONTENIDO DEL ROL 3: ADMINISTRADOR / DUEÑO                    -->
+                <!-- CONTENIDO DEL ROL: ADMINISTRADOR                              -->
+                <!-- Configuraciones, bloqueos de fechas y logs (Auditoría)        -->
                 <!-- ------------------------------------------------------------- -->
                 <div id="role-content-admin" class="hidden space-y-8">
-                    <!-- Configuración y Logs -->
                     <div class="bg-gray-900 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] p-8 rounded-3xl text-white shadow-xl flex justify-between items-center relative overflow-hidden">
                         <div class="absolute right-0 top-0 h-full w-1/2 bg-gradient-to-l from-bautista-red/20 to-transparent"></div>
                         <div class="relative z-10">
@@ -602,16 +607,16 @@
                         </div>
                         <div id="audit-logs-container" class="space-y-3 text-sm max-h-60 overflow-y-auto pr-4 font-mono"></div>
                     </div>
-
                 </div>
 
             </div>
-
         </div>
 
     </main>
 
-    <!-- MODALES Y VENTANAS FLOTANTES -->
+    <!-- ================================================================= -->
+    <!-- MODALES Y VENTANAS FLOTANTES                                      -->
+    <!-- ================================================================= -->
 
     <!-- MODAL: LOGIN DE EMPLEADOS -->
     <div id="modal-login" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
@@ -622,19 +627,27 @@
             </div>
             <div>
                 <h3 class="text-2xl font-black text-gray-900">Acceso Restringido</h3>
-                <p class="text-sm text-gray-500 mt-2">Ingrese su contraseña de acceso para continuar al panel de empleados.</p>
+                <p class="text-sm text-gray-500 mt-2">Ingrese sus credenciales corporativas para continuar al panel de empleados.</p>
             </div>
             
-            <input type="password" id="login-pin" placeholder="•••••" class="w-full text-center text-2xl tracking-widest px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-gray-800 transition-all">
-            
-            <div class="flex gap-3 pt-2">
-                <button onclick="closeModal('modal-login')" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
-                <button onclick="verifyLogin()" class="flex-1 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-colors shadow-lg shadow-gray-900/20">Ingresar</button>
-            </div>
+            <form onsubmit="event.preventDefault(); verifyLogin();" class="space-y-4 text-left">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Correo Electrónico</label>
+                    <input type="email" id="login-email" placeholder="ejemplo@gmail.com" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-gray-800 transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Contraseña</label>
+                    <input type="password" id="login-pass" placeholder="••••••••" required class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-gray-800 transition-all">
+                </div>
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeModal('modal-login')" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
+                    <button type="submit" class="flex-1 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-colors shadow-lg shadow-gray-900/20">Ingresar</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- MODAL: PRE-REGISTRO WHATSAPP -->
+    <!-- MODAL: PRE-REGISTRO Y REDIRECCIÓN A WHATSAPP -->
     <div id="modal-whatsapp" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl space-y-6 fade-in relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
@@ -684,7 +697,6 @@
     <div id="modal-manual-booking" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] max-w-lg w-full p-8 shadow-2xl space-y-6 fade-in relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-bautista-red to-red-400"></div>
-            
             <div class="flex justify-between items-start mb-2">
                 <div>
                     <h3 class="text-2xl font-black text-gray-900 tracking-tight">Registro Manual</h3>
@@ -694,12 +706,12 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
+            <!-- Formulario oculto por brevedad pero se mantiene original -->
             <form onsubmit="event.preventDefault(); processManualBooking();" class="space-y-5 text-sm">
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Cliente *</label>
-                        <input type="text" id="m-client-name" required minlength="3" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Ingrese un nombre válido (solo letras)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
+                        <input type="text" id="m-client-name" required minlength="3" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Ingrese un nombre válido (solo letras, sin números)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">DUI / NIT *</label>
@@ -742,7 +754,11 @@
                         </select>
                     </div>
                 </div>
-                <div class="pt-4 flex justify-end gap-3">
+                <div class="mt-2">
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Comentarios (Opcional)</label>
+                    <textarea id="m-comments" rows="2" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all resize-none" placeholder="Añade instrucciones adicionales..."></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-3">
                     <button type="button" onclick="closeModal('modal-manual-booking')" class="px-6 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
                     <button type="submit" class="px-8 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl shadow-lg shadow-gray-900/20 transition-all transform hover:-translate-y-0.5">Guardar Cita</button>
                 </div>
@@ -750,11 +766,11 @@
         </div>
     </div>
 
-    <!-- MODAL: EDITAR CITA -->
+    <!-- MODAL: EDITAR CITA (Se mantiene la estructura original) -->
     <div id="modal-edit-booking" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <!-- Contenido Omitido para mantener brevedad: Es idéntico al manual booking pero repinta los datos -->
         <div class="bg-white rounded-[2rem] max-w-lg w-full p-8 shadow-2xl space-y-6 fade-in relative overflow-hidden">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-blue-400"></div>
-            
             <div class="flex justify-between items-start mb-2">
                 <div>
                     <h3 class="text-2xl font-black text-gray-900 tracking-tight">Editar Cita</h3>
@@ -764,21 +780,18 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
             <form onsubmit="event.preventDefault(); processEditBooking();" class="space-y-5 text-sm">
                 <input type="hidden" id="e-id">
-
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Cliente *</label>
-                        <input type="text" id="e-client-name" required minlength="3" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Ingrese un nombre válido (solo letras)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                        <input type="text" id="e-client-name" required minlength="3" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$" title="Ingrese un nombre válido (solo letras, sin números)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">DUI / NIT *</label>
                         <input type="text" id="e-client-dui" required oninput="formatDuiInput(event)" pattern="^\d{8}-\d$" placeholder="00000000-0" title="Formato válido: 00000000-0" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Teléfono *</label>
@@ -789,7 +802,6 @@
                         <input type="text" id="e-veh-placa" required pattern="^[A-Za-z]{1,2}\s?[0-9]{3}-?[0-9]{3}$" placeholder="P 123-456" title="Formato placa válido (ej. P 123-456)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 uppercase font-black outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Marca/Modelo *</label>
@@ -805,7 +817,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-5 p-4 bg-gray-50 rounded-2xl border border-gray-100">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Fecha *</label>
@@ -817,8 +828,11 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="pt-4 flex justify-end gap-3">
+                <div class="mt-2">
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Comentarios (Opcional)</label>
+                    <textarea id="e-comments" rows="2" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all resize-none"></textarea>
+                </div>
+                <div class="pt-2 flex justify-end gap-3">
                     <button type="button" onclick="closeModal('modal-edit-booking')" class="px-6 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
                     <button type="submit" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-900/20 transition-all transform hover:-translate-y-0.5">Actualizar Datos</button>
                 </div>
@@ -827,10 +841,13 @@
     </div>
 
     <!-- ================================================================= -->
-    <!-- LOGICA JAVASCRIPT                                                 -->
+    <!-- LOGICA JAVASCRIPT PRINCIPAL                                       -->
     <!-- ================================================================= -->
     <script>
-        // Formateadores en tiempo real
+        // =====================================================================
+        // FUNCIONES DE UTILIDAD (Formateadores, Storage y Notificaciones)
+        // =====================================================================
+        
         function formatPhoneInput(e) {
             let val = e.target.value.replace(/\D/g, '');
             if(val.length > 4) val = val.slice(0,4) + '-' + val.slice(4,8);
@@ -853,10 +870,10 @@
         };
 
         const INITIAL_APPOINTMENTS = [
-            { id: "BK-901", clientName: "Carlos Eduardo Mendoza", dui: "05481923-4", phone: "+503 7845-1234", placa: "P 345-912", vehType: "GENERAL", vehBrand: "Toyota", vehModel: "Corolla 2021", service: "Mantenimiento Preventivo (Aceite y Filtros)", date: "2026-09-28", timeSlot: "08:00 - 10:00", status: "PENDIENTE", kanbanStep: 1, createdAt: "2026-09-28 08:15" },
-            { id: "BK-902", clientName: "María René Alvarado", dui: "01823912-9", phone: "+503 7123-9876", placa: "C 812-441", vehType: "PESADO", vehBrand: "Hino", vehModel: "500 Series 2018", service: "Diagnóstico General con Escáner", date: "2026-09-28", timeSlot: "10:00 - 12:00", status: "EN_TALLER", kanbanStep: 2, createdAt: "2026-09-28 08:30" },
-            { id: "BK-903", clientName: "Roberto José Henríquez", dui: "06129841-2", phone: "+503 7980-4321", placa: "P 901-223", vehType: "GENERAL", vehBrand: "Nissan", vehModel: "Frontier 2019", service: "Sistema de Frenos y Suspensión", date: "2026-09-28", timeSlot: "12:00 - 14:00", status: "EN_TALLER", kanbanStep: 3, createdAt: "2026-09-28 09:00" },
-            { id: "BK-904", clientName: "Sofia Beatriz Gómez", dui: "02341920-5", phone: "+503 7555-8822", placa: "P 554-102", vehType: "GENERAL", vehBrand: "Hyundai", vehModel: "Tucson 2022", service: "Alineación y Balanceo de Llantas", date: "2026-09-29", timeSlot: "08:00 - 10:00", status: "COMPLETADO", kanbanStep: 4, createdAt: "2026-09-27 15:40" }
+            { id: "BK-901", clientName: "Josué García", dui: "05481923-4", phone: "+503 7845-1234", placa: "P 345-912", vehType: "GENERAL", vehBrand: "Toyota", vehModel: "Corolla 2021", service: "Mantenimiento Preventivo (Aceite y Filtros)", comments: "Sin comentarios", date: "2026-09-28", timeSlot: "08:00 - 10:00", status: "PENDIENTE", kanbanStep: 1, createdAt: "2026-09-28 08:15" },
+            { id: "BK-902", clientName: "Alisson Mendoza", dui: "01823912-9", phone: "+503 7123-9876", placa: "C 812-441", vehType: "PESADO", vehBrand: "Hino", vehModel: "500 Series 2018", service: "Diagnóstico General con Escáner", comments: "Problemas al encender por las mañanas", date: "2026-09-28", timeSlot: "10:00 - 12:00", status: "EN_TALLER", kanbanStep: 2, createdAt: "2026-09-28 08:30" },
+            { id: "BK-903", clientName: "Roberto José Henríquez", dui: "06129841-2", phone: "+503 7980-4321", placa: "P 901-223", vehType: "GENERAL", vehBrand: "Nissan", vehModel: "Frontier 2019", service: "Sistema de Frenos y Suspensión", comments: "Sin comentarios", date: "2026-09-28", timeSlot: "12:00 - 14:00", status: "EN_TALLER", kanbanStep: 3, createdAt: "2026-09-28 09:00" },
+            { id: "BK-904", clientName: "Sofia Beatriz Gómez", dui: "02341920-5", phone: "+503 7555-8822", placa: "P 554-102", vehType: "GENERAL", vehBrand: "Hyundai", vehModel: "Tucson 2022", service: "Alineación y Balanceo de Llantas", comments: "Trae repuestos en el baúl", date: "2026-09-29", timeSlot: "08:00 - 10:00", status: "COMPLETADO", kanbanStep: 4, createdAt: "2026-09-27 15:40" }
         ];
 
         let state = {
@@ -866,13 +883,13 @@
             config: { ...DEFAULT_CONFIG },
             appointments: [...INITIAL_APPOINTMENTS],
             logs: [
-                "Sistema BookIt v5.0.0 iniciado correctamente.",
+                "Sistema BookIt v6.2 iniciado correctamente.",
                 "Carga de parámetros iniciales completada."
             ]
         };
 
         function loadState() {
-            const saved = localStorage.getItem('BOOKIT_STATE_V5');
+            const saved = localStorage.getItem('BOOKIT_STATE_V6_2');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -887,11 +904,18 @@
         }
 
         function saveState() {
-            localStorage.setItem('BOOKIT_STATE_V5', JSON.stringify({
+            localStorage.setItem('BOOKIT_STATE_V6_2', JSON.stringify({
                 config: state.config,
                 appointments: state.appointments,
                 logs: state.logs
             }));
+        }
+
+        function updateHeroSchedule() {
+            const heroSchedule = document.getElementById('hero-schedule-text');
+            if (heroSchedule) {
+                heroSchedule.innerText = `${state.config.openHour} - ${state.config.closeHour}`;
+            }
         }
 
         function logActivity(msg) {
@@ -940,7 +964,10 @@
         function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
         function closeModal(id) {
             document.getElementById(id).classList.add('hidden');
-            if (id === 'modal-login') document.getElementById('login-pin').value = '';
+            if (id === 'modal-login') {
+                document.getElementById('login-email').value = '';
+                document.getElementById('login-pass').value = '';
+            }
         }
 
         function renderAuditLogs() {
@@ -955,31 +982,54 @@
             });
         }
 
-        // LÓGICA DE LOGIN PARA EMPLEADOS
+        // =====================================================================
+        // USUARIOS DEL SISTEMA (MOCK PARA PRUEBAS Y VALIDACIÓN DE ROLES)
+        // =====================================================================
+        const MOCK_USERS = [
+            { email: 'josue@gmail.com', pass: '12345', role: 'admin' },       // Jefe general - Acceso a TODO
+            { email: 'ali@gmail.com', pass: '12345', role: 'secretaria' },    // Secretaria - Acceso a TODO
+            { email: 'nacho@gmail.com', pass: '12345', role: 'jefe' }         // Jefe de taller - Acceso RESTRICTIVO
+        ];
+
+        let currentSessionRole = null; // Almacena el rol autenticado
+
+        // =====================================================================
+        // CONTROL DE ACCESO BASADO EN ROLES (RBAC) Y LOGIN
+        // =====================================================================
         function switchView(viewName) {
             if (viewName === 'employee') {
                 if (state.view === 'employee') return; 
                 openModal('modal-login');
-                setTimeout(() => document.getElementById('login-pin').focus(), 100);
+                setTimeout(() => document.getElementById('login-email').focus(), 100);
             } else {
                 proceedToView('client');
             }
         }
 
         function verifyLogin() {
-            const pin = document.getElementById('login-pin').value;
-            if (pin === '12345') {
+            const email = document.getElementById('login-email').value.trim();
+            const pass = document.getElementById('login-pass').value;
+
+            if (!email.includes('@') || !email.endsWith('.com')) {
+                showToast("Formato de correo inválido. Asegúrese que contenga '@' y termine en '.com'", "error");
+                return;
+            }
+            if (pass.length < 4) {
+                showToast("La contraseña debe tener mínimo 4 caracteres", "error");
+                return;
+            }
+
+            const user = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pass === pass);
+            
+            if (user) {
+                currentSessionRole = user.role;
                 closeModal('modal-login');
                 proceedToView('employee');
-                showToast("Bienvenido al panel de empleados", "success");
+                showToast("Autenticación exitosa. Bienvenido al sistema.", "success");
             } else {
-                showToast("Contraseña incorrecta", "error");
+                showToast("Credenciales incorrectas o usuario no encontrado", "error");
             }
         }
-
-        document.getElementById('login-pin').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') verifyLogin();
-        });
 
         function proceedToView(viewName) {
             state.view = viewName;
@@ -996,11 +1046,48 @@
                 clientView.classList.add('hidden');
                 empView.classList.remove('hidden');
                 btnClient.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-400 hover:text-white";
+                
+                applyRBAC();
                 renderDashboard();
             }
         }
 
+        function applyRBAC() {
+            const btnSec = document.getElementById('role-btn-secretaria');
+            const btnJefe = document.getElementById('role-btn-jefe');
+            const btnAdmin = document.getElementById('role-btn-admin');
+
+            // 1. Jefe General y Secretario: Acceso a TODAS las vistas
+            if (currentSessionRole === 'admin' || currentSessionRole === 'secretaria') {
+                btnSec.classList.remove('hidden');
+                btnJefe.classList.remove('hidden');
+                btnAdmin.classList.remove('hidden');
+                
+                if (currentSessionRole === 'admin' && state.role !== 'admin') {
+                     switchRole('admin');
+                } else if (currentSessionRole === 'secretaria' && state.role !== 'secretaria') {
+                     switchRole('secretaria');
+                } else {
+                     switchRole(currentSessionRole); 
+                }
+            } 
+            // 2. Jefe de Taller: Acceso restringido ÚNICAMENTE a su vista
+            else if (currentSessionRole === 'jefe') {
+                btnSec.classList.add('hidden');
+                btnAdmin.classList.add('hidden');
+                btnJefe.classList.remove('hidden');
+                switchRole('jefe'); 
+            }
+        }
+
         function switchRole(roleName) {
+            // VERIFICACIÓN DE SEGURIDAD ESTricta:
+            // Impide que el Jefe de taller interactúe con el DOM para acceder a otras vistas
+            if (currentSessionRole === 'jefe' && roleName !== 'jefe') {
+                showToast("Acceso denegado: Tu rol solo permite visualizar el panel de Jefe de Taller.", "error");
+                return;
+            }
+
             state.role = roleName;
             const roles = ['secretaria', 'jefe', 'admin'];
             
@@ -1018,18 +1105,51 @@
             renderDashboard();
         }
 
-        // Modificado para saltar de 2 en 2 horas
+        // =====================================================================
+        // CALENDARIO Y AGENDA DE RESERVAS
+        // =====================================================================
         function generateTimeSlots() {
             const startHour = parseInt(state.config.openHour.split(':')[0]);
             const endHour = parseInt(state.config.closeHour.split(':')[0]);
             const slots = [];
-            for (let h = startHour; h < endHour; h += 2) {
-                const h1 = h < 10 ? `0${h}:00` : `${h}:00`;
-                const nextH = h + 2;
-                if(nextH > endHour) break; 
+
+            // Bloque de la Mañana (desde startHour hasta las 12:00)
+            let currentHour = startHour;
+            if (currentHour < 12) {
+                // Si la cantidad de horas hasta el mediodía es impar, el primer bloque será de 1 hora
+                if ((12 - currentHour) % 2 !== 0) {
+                    const h1 = currentHour < 10 ? `0${currentHour}:00` : `${currentHour}:00`;
+                    currentHour += 1;
+                    const h2 = currentHour < 10 ? `0${currentHour}:00` : `${currentHour}:00`;
+                    slots.push(`${h1} - ${h2}`);
+                }
+                
+                // Resto de bloques de 2 horas hasta las 12:00
+                while (currentHour < 12) {
+                    const h1 = currentHour < 10 ? `0${currentHour}:00` : `${currentHour}:00`;
+                    currentHour += 2;
+                    const nextH = Math.min(currentHour, 12);
+                    const h2 = nextH < 10 ? `0${nextH}:00` : `${nextH}:00`;
+                    slots.push(`${h1} - ${h2}`);
+                }
+            }
+
+            // Bloque de la Tarde (desde las 12:00 o startHour en adelante)
+            currentHour = Math.max(12, startHour);
+            while (currentHour < endHour) {
+                const h1 = currentHour < 10 ? `0${currentHour}:00` : `${currentHour}:00`;
+                
+                let nextH = currentHour + 2;
+                if (nextH > endHour) {
+                    nextH = endHour; // Si sobra 1 hora al final de la tarde, queda como bloque de 1 hr
+                }
+                
                 const h2 = nextH < 10 ? `0${nextH}:00` : `${nextH}:00`;
                 slots.push(`${h1} - ${h2}`);
+                
+                currentHour = nextH;
             }
+
             return slots;
         }
 
@@ -1038,9 +1158,6 @@
             return state.appointments.filter(a => a.date === dateStr && a.timeSlot === slotStr && a.status !== 'CANCELADO').length;
         }
 
-        // =====================================================================
-        // CALENDARIO PÚBLICO
-        // =====================================================================
         function renderPublicCalendar() {
             const dateInput = document.getElementById('public-calendar-date');
             const tomorrow = getTomorrowDateString();
@@ -1097,13 +1214,9 @@
                 const card = document.createElement('button');
                 card.type = "button";
                 if(isFull) card.disabled = true;
-
-                if(!isFull){
-                    card.onclick = () => openWhatsAppModal(dateStr, slot);
-                }
+                if(!isFull) card.onclick = () => openWhatsAppModal(dateStr, slot);
 
                 card.className = `p-5 rounded-2xl border flex items-center justify-between relative overflow-hidden group ${cardColor} w-full text-left`;
-                
                 card.innerHTML = `
                     <div class="absolute top-0 left-0 h-full w-1.5 ${barColor} opacity-80 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center text-lg sm:text-xl font-black text-gray-900 tracking-tight pl-3">
@@ -1121,13 +1234,8 @@
                     </div>
                 `;
                 
-                if (isMatutino) {
-                    matutinoGrid.appendChild(card);
-                    countMatutino++;
-                } else {
-                    vespertinoGrid.appendChild(card);
-                    countVespertino++;
-                }
+                if (isMatutino) { matutinoGrid.appendChild(card); countMatutino++; } 
+                else { vespertinoGrid.appendChild(card); countVespertino++; }
             });
 
             if (countMatutino > 0) {
@@ -1148,17 +1256,14 @@
         }
 
         // =====================================================================
-        // INTEGRACIÓN CON WHATSAPP (MODAL PREVIO)
+        // INTEGRACIÓN CON WHATSAPP
         // =====================================================================
         function openWhatsAppModal(dateStr, slot) {
             document.getElementById('wa-date').value = dateStr;
             document.getElementById('wa-slot').value = slot;
 
             const formattedDate = new Date(dateStr).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            // Mensaje preliminar editable
             document.getElementById('wa-message').value = `Hola Taller Bautista, me gustaría reservar un espacio para mi vehículo el día ${formattedDate} en el horario de ${slot}. ¿Tienen disponibilidad?`;
-            
             openModal('modal-whatsapp');
         }
 
@@ -1170,19 +1275,47 @@
             if (withData) {
                 const name = document.getElementById('wa-name').value.trim();
                 const phone = document.getElementById('wa-phone').value.trim();
-                const email = document.getElementById('wa-email').value.trim();
+                let email = document.getElementById('wa-email').value.trim();
                 
+                // --- Validaciones añadidas ---
                 if(!name || !phone) {
                     showToast("El nombre y teléfono son obligatorios para enviar con datos.", "error");
                     return;
                 }
 
-                // Autocompletar datos en el mensaje de whatsapp
-                msg = `*Solicitud de Pre-Reserva*\n--------------------\n*Cliente:* ${name}\n*Teléfono:* ${phone}\n${email ? '*Correo:* ' + email + '\n' : ''}--------------------\n*Mensaje:* ${msg}`;
+                // Validar que el nombre solo contenga letras y espacios
+                const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+                if (!nameRegex.test(name)) {
+                    showToast("El nombre no puede contener números ni caracteres especiales.", "error");
+                    return;
+                }
+
+                // Validar que el teléfono tenga al menos 8 dígitos (Formato base El Salvador)
+                const phoneDigits = phone.replace(/\D/g, '');
+                if (phoneDigits.length < 8) {
+                    showToast("El número de teléfono debe tener al menos 8 dígitos válidos.", "error");
+                    return;
+                }
+
+                // Validar formato de correo o asignar valor por defecto
+                if (!email) {
+                    email = "No ingresado";
+                } else {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if(!emailRegex.test(email)) {
+                        showToast("El formato del correo electrónico no es válido.", "error");
+                        return;
+                    }
+                }
+
+                // Formato de mensaje natural, sin emojis, integrando los datos en un párrafo y en negrita
+                msg = `*¡Hola equipo de Taller Bautista!*\n\nLes comparto mis datos para agilizar mi solicitud de reserva. Mi nombre es *${name}*, pueden contactarme al número *${phone}*. Mi correo electrónico es *${email}*.\n\n*Detalles de mi solicitud:*\n"${msg}"\n\n¡Muchas gracias y quedo a la espera de su confirmación!`;
             }
 
             const encodedMessage = encodeURIComponent(msg);
-            const waLink = `https://wa.me/50370000000?text=${encodedMessage}`;
+            // WhatsApp Número de redirección (Pruebas activo)
+            const waLink = `https://wa.me/50372948461?text=${encodedMessage}`;
+
             window.open(waLink, '_blank');
             closeModal('modal-whatsapp');
         }
@@ -1194,7 +1327,7 @@
         }
 
         // =====================================================================
-        // VISTA SECRETARÍA
+        // LOGICA PANEL: SECRETARÍA
         // =====================================================================
         function renderSecretaryView() {
             const total = state.appointments.length;
@@ -1248,12 +1381,8 @@
 
                 tr.innerHTML = `
                     <td class="px-6 py-4 font-bold text-gray-900 whitespace-nowrap">
-                        <div class="flex items-center gap-2 mb-1">
-                            <i class="fa-regular fa-calendar text-gray-400"></i> ${a.date}
-                        </div>
-                        <div class="text-[11px] text-gray-500 font-medium flex items-center gap-2">
-                            <i class="fa-regular fa-clock text-gray-400"></i> ${a.timeSlot}
-                        </div>
+                        <div class="flex items-center gap-2 mb-1"><i class="fa-regular fa-calendar text-gray-400"></i> ${a.date}</div>
+                        <div class="text-[11px] text-gray-500 font-medium flex items-center gap-2"><i class="fa-regular fa-clock text-gray-400"></i> ${a.timeSlot}</div>
                         <span class="text-[10px] font-mono text-red-500 font-black mt-1 block">${a.id}</span>
                     </td>
                     <td class="px-6 py-4">
@@ -1266,12 +1395,13 @@
                         <div class="text-[11px] text-gray-600 font-bold mt-2 uppercase tracking-wider">${a.vehBrand} ${a.vehModel}</div>
                         <div class="text-[10px] text-gray-400">${a.vehType}</div>
                     </td>
-                    <td class="px-6 py-4 font-bold text-gray-700 text-xs">${a.service}</td>
+                    <td class="px-6 py-4 font-bold text-gray-700 text-xs">
+                        ${a.service}
+                        <div class="text-[10px] text-gray-500 mt-1 font-normal italic"><i class="fa-regular fa-comment mr-1"></i>${a.comments || 'Sin comentarios'}</div>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap">${statusBadge}</td>
                     <td class="px-6 py-4 text-right flex items-center justify-end gap-2 mt-4">
-                        <button onclick="openEditModal('${a.id}')" title="Editar Información" class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 flex items-center justify-center transition-colors shadow-sm">
-                            <i class="fa-solid fa-pen text-xs"></i>
-                        </button>
+                        <button onclick="openEditModal('${a.id}')" title="Editar Información" class="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 hover:text-blue-700 flex items-center justify-center transition-colors shadow-sm"><i class="fa-solid fa-pen text-xs"></i></button>
                         <select onchange="changeAppointmentStatus('${a.id}', this.value)" class="text-xs font-bold px-3 py-2 rounded-xl bg-white border border-gray-200 shadow-sm outline-none focus:ring-2 focus:ring-bautista-red cursor-pointer group-hover:border-gray-300 transition-colors">
                             <option value="PENDIENTE" ${a.status === 'PENDIENTE' ? 'selected' : ''}>Mover a PENDIENTE</option>
                             <option value="EN_TALLER" ${a.status === 'EN_TALLER' ? 'selected' : ''}>Mover a EN TALLER</option>
@@ -1301,13 +1431,12 @@
         }
 
         // =====================================================================
-        // MODALES DE REGISTRO MANUAL Y EDICIÓN
+        // LOGICA DE RESERVA MANUAL Y EDICIÓN
         // =====================================================================
         function openManualBookingModal() {
             const dateInput = document.getElementById('m-date');
             dateInput.min = getTodayDateString(); 
             dateInput.value = getTodayDateString(); 
-            
             updateManualTimeSlots();
             openModal('modal-manual-booking');
         }
@@ -1316,9 +1445,7 @@
             const date = document.getElementById('m-date').value;
             const select = document.getElementById('m-time-slot');
             select.innerHTML = '';
-
-            const slots = generateTimeSlots();
-            slots.forEach(slot => {
+            generateTimeSlots().forEach(slot => {
                 const booked = getBookedCountForSlot(date, slot);
                 const max = state.config.maxCapacity;
                 const opt = document.createElement('option');
@@ -1344,24 +1471,23 @@
                 return;
             }
 
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            if (!nameRegex.test(name)) {
+                showToast("El nombre no puede contener números ni caracteres extraños.", "error");
+                return;
+            }
+
+            let comments = document.getElementById('m-comments').value.trim();
+            if (!comments) comments = "Sin comentarios";
+
             const newId = `BK-${Math.floor(100 + Math.random() * 900)}`;
             let formattedPhone = phone.startsWith('+503') ? phone : `+503 ${phone}`;
 
             state.appointments.unshift({
-                id: newId,
-                clientName: name,
-                dui: dui,
-                phone: formattedPhone,
-                placa: placa,
-                vehType: "GENERAL",
-                vehBrand: model.split(' ')[0] || "Marca",
-                vehModel: model,
-                service: service,
-                date: date,
-                timeSlot: timeSlot,
-                status: 'PENDIENTE',
-                kanbanStep: 1,
-                createdAt: new Date().toLocaleString()
+                id: newId, clientName: name, dui: dui, phone: formattedPhone, placa: placa,
+                vehType: "GENERAL", vehBrand: model.split(' ')[0] || "Marca", vehModel: model,
+                service: service, comments: comments, date: date, timeSlot: timeSlot,
+                status: 'PENDIENTE', kanbanStep: 1, createdAt: new Date().toLocaleString()
             });
 
             saveState();
@@ -1384,6 +1510,7 @@
             document.getElementById('e-veh-placa').value = appt.placa;
             document.getElementById('e-veh-model').value = appt.vehModel;
             document.getElementById('e-service-choice').value = appt.service;
+            document.getElementById('e-comments').value = (appt.comments && appt.comments !== "Sin comentarios") ? appt.comments : "";
             
             const dateInput = document.getElementById('e-date');
             dateInput.min = getTodayDateString(); 
@@ -1405,13 +1532,10 @@
             const currentDate = appt ? appt.date : null;
 
             select.innerHTML = '';
-            const slots = generateTimeSlots();
-
-            slots.forEach(slot => {
+            generateTimeSlots().forEach(slot => {
                 let booked = getBookedCountForSlot(date, slot);
-                if (appt && date === currentDate && slot === currentSlot) {
-                    booked = Math.max(0, booked - 1);
-                }
+                if (appt && date === currentDate && slot === currentSlot) booked = Math.max(0, booked - 1);
+                
                 const max = state.config.maxCapacity;
                 const opt = document.createElement('option');
                 opt.value = slot;
@@ -1437,6 +1561,15 @@
             const newDate = document.getElementById('e-date').value;
             const newSlot = document.getElementById('e-time-slot').value;
 
+            const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+            if (!nameRegex.test(name)) {
+                showToast("El nombre no puede contener números ni caracteres extraños.", "error");
+                return;
+            }
+
+            let comments = document.getElementById('e-comments').value.trim();
+            if (!comments) comments = "Sin comentarios";
+
             if (newDate !== appt.date || newSlot !== appt.timeSlot) {
                 if (getBookedCountForSlot(newDate, newSlot) >= state.config.maxCapacity) {
                     showToast("El nuevo horario elegido está lleno. Elija otro bloque.", "error");
@@ -1446,25 +1579,35 @@
                 appt.timeSlot = newSlot;
             }
 
-            appt.clientName = name;
-            appt.dui = dui;
-            appt.phone = phone;
-            appt.placa = placa;
-            appt.vehModel = model;
-            appt.vehBrand = model.split(' ')[0] || "Marca";
-            appt.service = service;
+            appt.clientName = name; appt.dui = dui; appt.phone = phone;
+            appt.placa = placa; appt.vehModel = model; appt.vehBrand = model.split(' ')[0] || "Marca";
+            appt.service = service; appt.comments = comments;
 
             saveState();
-            logActivity(`Cita editada / modificada: ${id} (${placa})`);
-            showToast("Información de la cita actualizada correctamente.", "success");
+            logActivity(`Cita editada: ${id} (${placa})`);
+            showToast("Información de la cita actualizada.", "success");
             closeModal('modal-edit-booking');
             renderDashboard();
             renderPublicCalendar();
         }
 
         // =====================================================================
-        // VISTA JEFE DE TALLER (Kanban con Filtros y Fast-Track)
+        // LOGICA PANEL: JEFE DE TALLER (Kanban Board)
         // =====================================================================
+        function toggleDetails(id) {
+            const div = document.getElementById(`details-${id}`);
+            const icon = document.getElementById(`icon-details-${id}`);
+            if(div.classList.contains('hidden')) {
+                div.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                div.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
         function renderJefeView() {
             const filterDate = document.getElementById('jefe-filter-date').value;
             const filterShift = document.getElementById('jefe-filter-shift').value;
@@ -1475,14 +1618,9 @@
                 
                 const items = state.appointments.filter(a => {
                     if (a.kanbanStep !== step || a.status === 'CANCELADO') return false;
-
                     const hour = parseInt(a.timeSlot.split(':')[0]);
                     const shift = hour < 12 ? 'MANANA' : 'TARDE';
-
-                    const matchesDate = !filterDate || a.date === filterDate;
-                    const matchesShift = filterShift === 'ALL' || shift === filterShift;
-
-                    return matchesDate && matchesShift;
+                    return (!filterDate || a.date === filterDate) && (filterShift === 'ALL' || shift === filterShift);
                 });
 
                 document.getElementById(`kanban-count-${step}`).innerText = items.length;
@@ -1494,20 +1632,15 @@
 
                 items.forEach(a => {
                     const card = document.createElement('div');
-                    card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all space-y-3 cursor-pointer group";
+                    card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all space-y-3 cursor-default group";
                     
-                    // Botón Finalizar directo (Fast Track a completado) si no está ya en el paso 4
-                    const finalizeBtn = step < 4 
-                        ? `<button onclick="moveKanban('${a.id}', 4)" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 hover:shadow-sm px-2 py-1.5 rounded-lg transition-all flex items-center gap-1"><i class="fa-solid fa-check-double"></i> Finalizar</button>` 
-                        : '<span></span>';
+                    const finalizeBtn = step < 4 ? `<button onclick="moveKanban('${a.id}', 4)" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 hover:shadow-sm px-2 py-1.5 rounded-lg transition-all flex items-center gap-1"><i class="fa-solid fa-check-double"></i> Finalizar</button>` : '<span></span>';
 
                     card.innerHTML = `
                         <div class="flex justify-between items-start">
                             <span class="px-3 py-1 rounded-lg bg-gray-900 text-white font-mono font-black text-xs shadow-sm">${a.placa}</span>
                             <div class="flex items-center gap-2">
-                                <button onclick="openEditModal('${a.id}')" title="Editar" class="text-gray-300 hover:text-blue-500 transition-colors">
-                                    <i class="fa-solid fa-pen text-xs"></i>
-                                </button>
+                                <button onclick="openEditModal('${a.id}')" title="Editar" class="text-gray-300 hover:text-blue-500 transition-colors"><i class="fa-solid fa-pen text-xs"></i></button>
                                 <span class="font-mono text-[10px] font-black text-gray-400 group-hover:text-red-500 transition-colors">${a.id}</span>
                             </div>
                         </div>
@@ -1519,6 +1652,18 @@
                             <span class="truncate pr-2 font-bold"><i class="fa-regular fa-clock mr-1 text-gray-400"></i>${a.timeSlot}</span>
                             <span class="font-bold text-gray-400">${a.date}</span>
                         </div>
+                        
+                        <div id="details-${a.id}" class="hidden mt-2 p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-[11px] text-gray-700 space-y-1.5 fade-in">
+                            <p><span class="font-bold text-blue-800"><i class="fa-solid fa-user mr-1"></i> Cliente:</span> ${a.clientName}</p>
+                            <p><span class="font-bold text-blue-800"><i class="fa-solid fa-phone mr-1"></i> Teléfono:</span> <a href="tel:${a.phone.replace(/\s/g,'')}" class="text-blue-600 underline">${a.phone}</a></p>
+                            <p><span class="font-bold text-blue-800"><i class="fa-solid fa-id-card mr-1"></i> DUI:</span> ${a.dui}</p>
+                            <p><span class="font-bold text-blue-800"><i class="fa-solid fa-wrench mr-1"></i> Detalle Servicio:</span> ${a.service}</p>
+                            <p><span class="font-bold text-blue-800"><i class="fa-solid fa-comment mr-1"></i> Comentarios:</span> ${a.comments || 'Sin comentarios'}</p>
+                        </div>
+                        <button onclick="toggleDetails('${a.id}')" class="w-full mt-2 py-1.5 text-[10px] font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-chevron-down" id="icon-details-${a.id}"></i> Info de contacto y vehículo
+                        </button>
+                        
                         <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
                             ${step > 1 ? `<button onclick="moveKanban('${a.id}',${step - 1})" class="text-[10px] font-bold text-gray-400 hover:text-blue-500 transition-colors bg-gray-50 px-2 py-1.5 rounded-lg"><i class="fa-solid fa-arrow-left"></i> Ant.</button>` : '<span></span>'}
                             ${finalizeBtn}
@@ -1545,7 +1690,7 @@
         }
 
         // =====================================================================
-        // VISTA ADMINISTRACIÓN
+        // LOGICA PANEL: ADMINISTRADOR
         // =====================================================================
         function renderAdminView() {
             document.getElementById('cfg-open-time').value = state.config.openHour;
@@ -1566,9 +1711,7 @@
                             <div class="font-bold text-gray-800">${b.date}</div>
                             <div class="text-[10px] text-gray-500 uppercase tracking-wider">${b.reason}</div>
                         </div>
-                        <button onclick="removeBlockDate(${index})" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-trash text-xs"></i>
-                        </button>
+                        <button onclick="removeBlockDate(${index})" class="w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center transition-colors"><i class="fa-solid fa-trash text-xs"></i></button>
                     `;
                     blockedList.appendChild(div);
                 });
@@ -1584,18 +1727,16 @@
             saveState();
             logActivity("Parámetros del sistema actualizados.");
             showToast("Configuración guardada correctamente.", "success");
+            updateHeroSchedule();
             renderPublicCalendar();
         }
 
         function addDateBlock() {
             const date = document.getElementById('cfg-block-date').value;
             const reason = document.getElementById('cfg-block-reason').value;
-
             if (state.config.blockedDates.some(b => b.date === date)) {
-                showToast("Esta fecha ya se encuentra bloqueada.", "error");
-                return;
+                showToast("Esta fecha ya se encuentra bloqueada.", "error"); return;
             }
-
             state.config.blockedDates.push({ date, reason });
             saveState();
             logActivity(`Fecha bloqueada: ${date} (${reason})`);
@@ -1603,9 +1744,7 @@
             
             document.getElementById('cfg-block-date').value = '';
             document.getElementById('cfg-block-reason').value = '';
-            
-            renderAdminView();
-            renderPublicCalendar();
+            renderAdminView(); renderPublicCalendar();
         }
 
         function removeBlockDate(index) {
@@ -1613,12 +1752,12 @@
             saveState();
             logActivity(`Bloqueo removido: ${removed.date}`);
             showToast("Bloqueo de fecha eliminado.", "success");
-            renderAdminView();
-            renderPublicCalendar();
+            renderAdminView(); renderPublicCalendar();
         }
 
         window.onload = () => {
             loadState();
+            updateHeroSchedule();
             renderPublicCalendar();
         };
     </script>
