@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototype-V4 - Taller Bautista</title>
+    <title>Prototype-V5 - Taller Bautista</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -83,15 +83,16 @@
                     </div>
                 </div>
 
-                <!-- Botones para cambiar entre vista Cliente / Empleados -->
+                <!-- Botón de Portal Clientes (Botón de Empleados oculto para clientes) -->
                 <div class="flex items-center bg-black/50 p-1.5 rounded-2xl border border-white/10 shadow-inner">
                     <button id="btn-view-client" onclick="switchView('client')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md">
                         <i class="fa-solid fa-globe"></i>
-                        <span class="hidden sm:inline">Portal Clientes</span>
+                        <span>Portal Clientes</span>
                     </button>
-                    <button id="btn-view-employee" onclick="switchView('employee')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-400 hover:text-white">
+                    <!-- El botón de empleados ahora está oculto en el header público -->
+                    <button id="btn-view-employee" onclick="switchView('employee')" class="hidden px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-gray-800 text-white shadow-md hover:bg-gray-700">
                         <i class="fa-solid fa-user-gear"></i>
-                        <span class="hidden sm:inline">Panel Empleados</span>
+                        <span>Panel Interno</span>
                     </button>
                 </div>
 
@@ -171,7 +172,6 @@
                                     </div>
                                     <span class="font-bold text-white bg-black/30 px-3 py-1 rounded-lg" id="hero-schedule-text">08:00 - 17:00</span>
                                 </div>
-                                <!-- Capacidad por hora eliminada -->
                             </div>
 
                             <div class="mt-8 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-start gap-3">
@@ -186,14 +186,36 @@
                 </div>
             </section>
 
-            <!-- CALENDARIO PÚBLICO MEJORADO (Matutino / Vespertino en 2 Columnas) -->
+            <!-- CALENDARIO PÚBLICO MEJORADO (Mañana / Tarde en 2 Columnas) -->
             <section id="calendario-publico" class="py-24 bg-white relative">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
-                    <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="text-center max-w-3xl mx-auto mb-10">
                         <span class="text-xs font-black uppercase tracking-widest text-bautista-red mb-2 block">Agendamiento Inmediato</span>
                         <h2 class="text-3xl md:text-5xl font-black text-gray-900 tracking-tight">Selecciona tu Horario</h2>
                         <p class="text-gray-500 mt-4 text-lg">Haz clic en un horario disponible para confirmar los detalles de tu vehículo directamente con recepción.</p>
+                    </div>
+
+                    <!-- REGLAS DE ANTICIPACIÓN Y CONFIRMACIÓN VISIBLES -->
+                    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                        <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="bg-blue-100 p-2 rounded-xl text-blue-600 mt-0.5">
+                                <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-blue-800 text-sm mb-1">Regla de Anticipación</h4>
+                                <p class="text-xs text-blue-700 font-medium leading-relaxed">Haz tu reserva con al menos <strong>24 horas de anticipación</strong>. Nuestra agenda para el mismo día suele estar cubierta.</p>
+                            </div>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-4 shadow-sm hover:shadow-md transition-shadow">
+                            <div class="bg-amber-100 p-2 rounded-xl text-amber-600 mt-0.5">
+                                <i class="fa-solid fa-clipboard-check text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-amber-800 text-sm mb-1">Estado de tu Reserva</h4>
+                                <p class="text-xs text-amber-700 font-medium leading-relaxed">Tu solicitud <strong>no está confirmada</strong> hasta que un asesor te contacte. El horario seguirá <em>"disponible"</em> hasta oficializarlo.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="bg-gray-50 p-6 md:p-8 rounded-3xl border border-gray-200 shadow-soft mb-12">
@@ -221,7 +243,7 @@
                             </div>
                         </div>
 
-                        <!-- Grid de 2 columnas principales (Izquierda: Matutino, Derecha: Vespertino) -->
+                        <!-- Grid de 2 columnas principales (Izquierda: Mañana, Derecha: Tarde) -->
                         <div id="public-calendar-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                             <!-- Los horarios se insertan aquí vía Javascript -->
                         </div>
@@ -257,7 +279,11 @@
                             <div class="font-black text-white text-xl">GRUPO BAUTISTA</div>
                         </div>
                         <p class="text-gray-500 mb-6 leading-relaxed">Servicios automotrices de alta precisión en El Salvador desde 1978. Especialistas en mecánica general, diagnósticos y flotillas.</p>
-                        <p class="text-xs font-bold text-gray-600">&copy; 2026 Grupo Bautista - BookIt Engine v2.0</p>
+                        <p class="text-xs font-bold text-gray-600 flex items-center gap-2">
+                            &copy; 2026 Grupo Bautista - BookIt Engine v5.0
+                            <!-- Botón oculto/sutil para administradores -->
+                            <i class="fa-solid fa-lock text-gray-800 hover:text-gray-400 cursor-pointer transition-colors" title="Acceso Administrativo" onclick="switchView('employee')"></i>
+                        </p>
                     </div>
                     <div>
                         <div class="font-bold text-white text-lg mb-6">Contactos de Taller</div>
@@ -290,22 +316,22 @@
                             <i class="fa-solid fa-laptop-code text-xl"></i>
                         </div>
                         <div>
-                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider">BookIt Engine</div>
+                            <div class="text-xs text-gray-500 font-bold uppercase tracking-wider">BookIt Engine V5</div>
                             <div class="text-xl font-black text-gray-900">Panel Operativo Central</div>
                         </div>
                     </div>
 
                     <!-- Pestañas para cambiar de ROL (Secretaría, Jefe, Admin) -->
-                    <div class="flex items-center bg-gray-100 p-1.5 rounded-2xl border border-gray-200">
-                        <button id="role-btn-secretaria" onclick="switchRole('secretaria')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md">
+                    <div class="flex items-center bg-gray-100 p-1.5 rounded-2xl border border-gray-200 overflow-x-auto">
+                        <button id="role-btn-secretaria" onclick="switchRole('secretaria')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md whitespace-nowrap">
                             <i class="fa-solid fa-headset"></i>
                             <span>Secretaría</span>
                         </button>
-                        <button id="role-btn-jefe" onclick="switchRole('jefe')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200">
+                        <button id="role-btn-jefe" onclick="switchRole('jefe')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200 whitespace-nowrap">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
                             <span>Jefe de Taller</span>
                         </button>
-                        <button id="role-btn-admin" onclick="switchRole('admin')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200">
+                        <button id="role-btn-admin" onclick="switchRole('admin')" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200 whitespace-nowrap">
                             <i class="fa-solid fa-chart-line"></i>
                             <span>Administración</span>
                         </button>
@@ -380,12 +406,12 @@
                             <div class="relative w-full sm:w-40">
                                 <input type="date" id="sec-filter-date" onchange="renderSecretaryTable()" class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-bautista-red outline-none cursor-pointer">
                             </div>
-                            <!-- Filtro por Horario (Matutino/Vespertino) -->
+                            <!-- Filtro por Horario (Mañana/Tarde) -->
                             <div class="relative w-full sm:w-40">
                                 <select id="sec-filter-shift" onchange="renderSecretaryTable()" class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-bautista-red outline-none appearance-none cursor-pointer">
                                     <option value="ALL">Todos Turnos</option>
-                                    <option value="MATUTINO">Matutino</option>
-                                    <option value="VESPERTINO">Vespertino</option>
+                                    <option value="MANANA">Turno de Mañana</option>
+                                    <option value="TARDE">Turno de Tarde</option>
                                 </select>
                             </div>
                         </div>
@@ -402,7 +428,7 @@
                             <table class="w-full text-left text-sm">
                                 <thead class="bg-gray-50/50 text-gray-500 font-bold uppercase text-[10px] tracking-wider border-b border-gray-100">
                                     <tr>
-                                        <th class="px-6 py-5">Fecha & Hora</th>
+                                        <th class="px-6 py-5">Fecha & Hora (2 hrs)</th>
                                         <th class="px-6 py-5">Cliente & Contacto</th>
                                         <th class="px-6 py-5">Vehículo & Placa</th>
                                         <th class="px-6 py-5">Servicio Solicitado</th>
@@ -430,7 +456,7 @@
                             </div>
                             <div>
                                 <h3 class="font-black text-gray-900 text-xl">Tablero de Operaciones</h3>
-                                <p class="text-sm text-gray-500 font-medium">Control en tiempo real del flujo de vehículos.</p>
+                                <p class="text-sm text-gray-500 font-medium">Control en tiempo real del flujo de vehículos. Utiliza "Finalizar" para pases rápidos.</p>
                             </div>
                         </div>
 
@@ -444,8 +470,8 @@
                                 <label class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-1">Turno</label>
                                 <select id="jefe-filter-shift" onchange="renderJefeView()" class="w-full sm:w-40 px-4 py-2.5 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold text-gray-700 focus:ring-2 focus:ring-blue-500 outline-none appearance-none cursor-pointer">
                                     <option value="ALL">Todos Turnos</option>
-                                    <option value="MATUTINO">Matutino</option>
-                                    <option value="VESPERTINO">Vespertino</option>
+                                    <option value="MANANA">Turno de Mañana</option>
+                                    <option value="TARDE">Turno de Tarde</option>
                                 </select>
                             </div>
                         </div>
@@ -502,7 +528,7 @@
                         <div class="relative z-10">
                             <span class="text-xs font-black uppercase tracking-widest text-red-400 mb-2 block">Administración Global</span>
                             <h2 class="text-3xl font-black mt-1">Configuración del Sistema BookIt</h2>
-                            <p class="text-sm text-gray-400 mt-2 font-medium max-w-lg">Gestiona horarios de operación, capacidad del taller y audita el registro inmutable de actividades.</p>
+                            <p class="text-sm text-gray-400 mt-2 font-medium max-w-lg">Gestiona horarios de operación, capacidad del taller (por bloque de 2 horas) y audita el registro inmutable de actividades.</p>
                         </div>
                         <div class="hidden sm:flex w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl items-center justify-center border border-white/20 relative z-10">
                             <i class="fa-solid fa-sliders text-3xl text-white"></i>
@@ -527,7 +553,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Capacidad Max. / Hora</label>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Capacidad Max. / Bloque 2 Hrs</label>
                                     <input type="number" id="cfg-max-capacity" min="1" max="15" value="3" class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold focus:ring-2 focus:ring-bautista-red outline-none">
                                     <p class="mt-2 text-xs text-gray-400 font-medium">Define cuántos vehículos se pueden atender simultáneamente en una misma franja horaria.</p>
                                 </div>
@@ -551,8 +577,8 @@
                                         <input type="date" id="cfg-block-date" required class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-bold focus:ring-2 focus:ring-bautista-red outline-none cursor-pointer">
                                     </div>
                                     <div class="flex-2 w-full">
-                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Motivo</label>
-                                        <input type="text" id="cfg-block-reason" placeholder="Ej. Día Festivo" required class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-medium focus:ring-2 focus:ring-bautista-red outline-none">
+                                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Motivo Visible</label>
+                                        <input type="text" id="cfg-block-reason" placeholder="Ej. Día Festivo (Se muestra al cliente)" required class="w-full px-4 py-3 rounded-2xl bg-gray-50 border-none ring-1 ring-gray-200 text-sm font-medium focus:ring-2 focus:ring-bautista-red outline-none">
                                     </div>
                                 </div>
                                 <button type="submit" class="w-full py-3.5 bg-bautista-red hover:bg-bautista-darkRed text-white font-bold text-sm rounded-2xl shadow-lg shadow-red-900/20 transition-all duration-300 transform hover:-translate-y-0.5">
@@ -585,6 +611,8 @@
 
     </main>
 
+    <!-- MODALES Y VENTANAS FLOTANTES -->
+
     <!-- MODAL: LOGIN DE EMPLEADOS -->
     <div id="modal-login" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl max-w-sm w-full p-8 shadow-2xl space-y-6 fade-in text-center relative overflow-hidden">
@@ -603,6 +631,52 @@
                 <button onclick="closeModal('modal-login')" class="flex-1 py-3 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors">Cancelar</button>
                 <button onclick="verifyLogin()" class="flex-1 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl transition-colors shadow-lg shadow-gray-900/20">Ingresar</button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PRE-REGISTRO WHATSAPP -->
+    <div id="modal-whatsapp" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] max-w-md w-full p-8 shadow-2xl space-y-6 fade-in relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-emerald-500 to-emerald-400"></div>
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <h3 class="text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-emerald-500"></i> Pre-registro
+                    </h3>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Completa tus datos básicos para agilizar la atención.</p>
+                </div>
+                <button onclick="closeModal('modal-whatsapp')" class="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="wa-form" class="space-y-4 text-sm">
+                <input type="hidden" id="wa-date">
+                <input type="hidden" id="wa-slot">
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Nombre Completo</label>
+                    <input type="text" id="wa-name" placeholder="Tu nombre" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Teléfono</label>
+                    <input type="tel" id="wa-phone" oninput="formatPhoneInput(event)" placeholder="7000-0000" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Correo (Opcional)</label>
+                    <input type="email" id="wa-email" placeholder="correo@ejemplo.com" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Mensaje Preliminar (Editable)</label>
+                    <textarea id="wa-message" rows="3" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-emerald-500 transition-all resize-none"></textarea>
+                </div>
+                <div class="pt-4 flex flex-col gap-3">
+                    <button type="button" onclick="sendWhatsApp(true)" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-900/20 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                        <span>Ir a WhatsApp con mis datos</span>
+                    </button>
+                    <button type="button" onclick="sendWhatsApp(false)" class="w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-xl transition-all">
+                        Enviar mensaje genérico (sin datos)
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -629,13 +703,13 @@
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">DUI / NIT *</label>
-                        <input type="text" id="m-client-dui" required pattern="^\d{8}-\d$" placeholder="00000000-0" title="Formato válido: 00000000-0" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
+                        <input type="text" id="m-client-dui" required oninput="formatDuiInput(event)" pattern="^\d{8}-\d$" placeholder="00000000-0" title="Formato válido: 00000000-0" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Teléfono *</label>
-                        <input type="tel" id="m-client-phone" required pattern="^(\+503\s?)?[267]\d{3}-?\d{4}$" placeholder="7000-0000" title="Formato de número salvadoreño (ej. 7000-0000)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
+                        <input type="tel" id="m-client-phone" required oninput="formatPhoneInput(event)" pattern="^(\+503\s?)?[267]\d{3}-?\d{4}$" placeholder="7000-0000" title="Formato de número salvadoreño (ej. 7000-0000)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-bautista-red focus:bg-white transition-all">
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Placa *</label>
@@ -663,7 +737,7 @@
                         <input type="date" id="m-date" required onchange="updateManualTimeSlots()" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-bautista-red bg-white font-bold">
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Horario *</label>
+                        <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Horario (2 Hrs) *</label>
                         <select id="m-time-slot" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-bautista-red bg-white font-bold appearance-none">
                         </select>
                     </div>
@@ -701,14 +775,14 @@
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">DUI / NIT *</label>
-                        <input type="text" id="e-client-dui" required pattern="^\d{8}-\d$" placeholder="00000000-0" title="Formato válido: 00000000-0" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                        <input type="text" id="e-client-dui" required oninput="formatDuiInput(event)" pattern="^\d{8}-\d$" placeholder="00000000-0" title="Formato válido: 00000000-0" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-5">
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Teléfono *</label>
-                        <input type="tel" id="e-client-phone" required pattern="^(\+503\s?)?[267]\d{3}-?\d{4}$" placeholder="7000-0000" title="Formato de número salvadoreño (ej. 7000-0000)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
+                        <input type="tel" id="e-client-phone" required oninput="formatPhoneInput(event)" pattern="^(\+503\s?)?[267]\d{3}-?\d{4}$" placeholder="7000-0000" title="Formato de número salvadoreño (ej. 7000-0000)" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all">
                     </div>
                     <div>
                         <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Placa *</label>
@@ -738,7 +812,7 @@
                         <input type="date" id="e-date" required onchange="updateEditTimeSlots()" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-500 bg-white font-bold">
                     </div>
                     <div>
-                        <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Horario *</label>
+                        <label class="block font-bold text-gray-700 mb-1.5 text-xs uppercase tracking-wider">Horario (2 Hrs) *</label>
                         <select id="e-time-slot" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-500 bg-white font-bold appearance-none">
                         </select>
                     </div>
@@ -756,9 +830,22 @@
     <!-- LOGICA JAVASCRIPT                                                 -->
     <!-- ================================================================= -->
     <script>
+        // Formateadores en tiempo real
+        function formatPhoneInput(e) {
+            let val = e.target.value.replace(/\D/g, '');
+            if(val.length > 4) val = val.slice(0,4) + '-' + val.slice(4,8);
+            e.target.value = val;
+        }
+
+        function formatDuiInput(e) {
+            let val = e.target.value.replace(/\D/g, '');
+            if(val.length > 8) val = val.slice(0,8) + '-' + val.slice(8,9);
+            e.target.value = val;
+        }
+
         const DEFAULT_CONFIG = {
             openHour: "08:00",
-            closeHour: "17:00",
+            closeHour: "18:00",
             maxCapacity: 3,
             blockedDates: [
                 { date: "2026-10-02", reason: "Día del Trabajador Automotriz" }
@@ -766,10 +853,10 @@
         };
 
         const INITIAL_APPOINTMENTS = [
-            { id: "BK-901", clientName: "Carlos Eduardo Mendoza", dui: "05481923-4", phone: "+503 7845-1234", placa: "P 345-912", vehType: "GENERAL", vehBrand: "Toyota", vehModel: "Corolla 2021", service: "Mantenimiento Preventivo (Aceite y Filtros)", date: "2026-09-28", timeSlot: "09:00 - 10:00", status: "PENDIENTE", kanbanStep: 1, createdAt: "2026-09-28 08:15" },
-            { id: "BK-902", clientName: "María René Alvarado", dui: "01823912-9", phone: "+503 7123-9876", placa: "C 812-441", vehType: "PESADO", vehBrand: "Hino", vehModel: "500 Series 2018", service: "Diagnóstico General con Escáner", date: "2026-09-28", timeSlot: "10:00 - 11:00", status: "EN_TALLER", kanbanStep: 2, createdAt: "2026-09-28 08:30" },
-            { id: "BK-903", clientName: "Roberto José Henríquez", dui: "06129841-2", phone: "+503 7980-4321", placa: "P 901-223", vehType: "GENERAL", vehBrand: "Nissan", vehModel: "Frontier 2019", service: "Sistema de Frenos y Suspensión", date: "2026-09-28", timeSlot: "11:00 - 12:00", status: "EN_TALLER", kanbanStep: 3, createdAt: "2026-09-28 09:00" },
-            { id: "BK-904", clientName: "Sofia Beatriz Gómez", dui: "02341920-5", phone: "+503 7555-8822", placa: "P 554-102", vehType: "GENERAL", vehBrand: "Hyundai", vehModel: "Tucson 2022", service: "Alineación y Balanceo de Llantas", date: "2026-09-29", timeSlot: "08:00 - 09:00", status: "COMPLETADO", kanbanStep: 4, createdAt: "2026-09-27 15:40" }
+            { id: "BK-901", clientName: "Carlos Eduardo Mendoza", dui: "05481923-4", phone: "+503 7845-1234", placa: "P 345-912", vehType: "GENERAL", vehBrand: "Toyota", vehModel: "Corolla 2021", service: "Mantenimiento Preventivo (Aceite y Filtros)", date: "2026-09-28", timeSlot: "08:00 - 10:00", status: "PENDIENTE", kanbanStep: 1, createdAt: "2026-09-28 08:15" },
+            { id: "BK-902", clientName: "María René Alvarado", dui: "01823912-9", phone: "+503 7123-9876", placa: "C 812-441", vehType: "PESADO", vehBrand: "Hino", vehModel: "500 Series 2018", service: "Diagnóstico General con Escáner", date: "2026-09-28", timeSlot: "10:00 - 12:00", status: "EN_TALLER", kanbanStep: 2, createdAt: "2026-09-28 08:30" },
+            { id: "BK-903", clientName: "Roberto José Henríquez", dui: "06129841-2", phone: "+503 7980-4321", placa: "P 901-223", vehType: "GENERAL", vehBrand: "Nissan", vehModel: "Frontier 2019", service: "Sistema de Frenos y Suspensión", date: "2026-09-28", timeSlot: "12:00 - 14:00", status: "EN_TALLER", kanbanStep: 3, createdAt: "2026-09-28 09:00" },
+            { id: "BK-904", clientName: "Sofia Beatriz Gómez", dui: "02341920-5", phone: "+503 7555-8822", placa: "P 554-102", vehType: "GENERAL", vehBrand: "Hyundai", vehModel: "Tucson 2022", service: "Alineación y Balanceo de Llantas", date: "2026-09-29", timeSlot: "08:00 - 10:00", status: "COMPLETADO", kanbanStep: 4, createdAt: "2026-09-27 15:40" }
         ];
 
         let state = {
@@ -779,13 +866,13 @@
             config: { ...DEFAULT_CONFIG },
             appointments: [...INITIAL_APPOINTMENTS],
             logs: [
-                "Sistema BookIt v2.0.0 iniciado correctamente.",
+                "Sistema BookIt v5.0.0 iniciado correctamente.",
                 "Carga de parámetros iniciales completada."
             ]
         };
 
         function loadState() {
-            const saved = localStorage.getItem('BOOKIT_STATE_V2');
+            const saved = localStorage.getItem('BOOKIT_STATE_V5');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
@@ -800,7 +887,7 @@
         }
 
         function saveState() {
-            localStorage.setItem('BOOKIT_STATE_V2', JSON.stringify({
+            localStorage.setItem('BOOKIT_STATE_V5', JSON.stringify({
                 config: state.config,
                 appointments: state.appointments,
                 logs: state.logs
@@ -890,7 +977,6 @@
             }
         }
 
-        // Permite presionar Enter para login
         document.getElementById('login-pin').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') verifyLogin();
         });
@@ -900,19 +986,16 @@
             const clientView = document.getElementById('view-client');
             const empView = document.getElementById('view-employee');
             const btnClient = document.getElementById('btn-view-client');
-            const btnEmp = document.getElementById('btn-view-employee');
-
+            
             if (viewName === 'client') {
                 clientView.classList.remove('hidden');
                 empView.classList.add('hidden');
                 btnClient.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md";
-                btnEmp.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-400 hover:text-white";
                 renderPublicCalendar();
             } else {
                 clientView.classList.add('hidden');
                 empView.classList.remove('hidden');
                 btnClient.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-400 hover:text-white";
-                btnEmp.className = "px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md";
                 renderDashboard();
             }
         }
@@ -925,23 +1008,26 @@
                 const btn = document.getElementById(`role-btn-${r}`);
                 const content = document.getElementById(`role-content-${r}`);
                 if (r === roleName) {
-                    btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md";
+                    btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 bg-bautista-red text-white shadow-md whitespace-nowrap";
                     content.classList.remove('hidden');
                 } else {
-                    btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200";
+                    btn.className = "px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 text-gray-500 hover:text-gray-900 hover:bg-gray-200 whitespace-nowrap";
                     content.classList.add('hidden');
                 }
             });
             renderDashboard();
         }
 
+        // Modificado para saltar de 2 en 2 horas
         function generateTimeSlots() {
             const startHour = parseInt(state.config.openHour.split(':')[0]);
             const endHour = parseInt(state.config.closeHour.split(':')[0]);
             const slots = [];
-            for (let h = startHour; h < endHour; h++) {
+            for (let h = startHour; h < endHour; h += 2) {
                 const h1 = h < 10 ? `0${h}:00` : `${h}:00`;
-                const h2 = (h + 1) < 10 ? `0${h + 1}:00` : `${h + 1}:00`;
+                const nextH = h + 2;
+                if(nextH > endHour) break; 
+                const h2 = nextH < 10 ? `0${nextH}:00` : `${nextH}:00`;
                 slots.push(`${h1} - ${h2}`);
             }
             return slots;
@@ -953,7 +1039,7 @@
         }
 
         // =====================================================================
-        // CALENDARIO PÚBLICO (Organización mejorada de tarjetas y sin solapamiento)
+        // CALENDARIO PÚBLICO
         // =====================================================================
         function renderPublicCalendar() {
             const dateInput = document.getElementById('public-calendar-date');
@@ -984,8 +1070,8 @@
 
             const matutinoWrapper = document.createElement('div');
             const vespertinoWrapper = document.createElement('div');
-            matutinoWrapper.innerHTML = `<h3 class="text-lg font-black text-gray-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-sun text-amber-500 text-xl"></i> Turno Matutino</h3>`;
-            vespertinoWrapper.innerHTML = `<h3 class="text-lg font-black text-gray-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-cloud-sun text-orange-500 text-xl"></i> Turno Vespertino</h3>`;
+            matutinoWrapper.innerHTML = `<h3 class="text-lg font-black text-gray-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-sun text-amber-500 text-xl"></i> Turno de Mañana</h3>`;
+            vespertinoWrapper.innerHTML = `<h3 class="text-lg font-black text-gray-800 mb-6 flex items-center gap-2"><i class="fa-solid fa-cloud-sun text-orange-500 text-xl"></i> Turno de Tarde</h3>`;
 
             const matutinoGrid = document.createElement('div');
             matutinoGrid.className = "flex flex-col gap-4"; 
@@ -1007,18 +1093,17 @@
                 let cardColor = isFull ? "bg-gray-100 border-gray-200 opacity-60 cursor-not-allowed grayscale" : "bg-white border-gray-200 hover:border-emerald-400 hover:shadow-lg cursor-pointer transform hover:-translate-y-1 transition-all duration-300";
                 let badgeColor = isFull ? "bg-gray-200 text-gray-600" : (percentage >= 60 ? "bg-amber-100 text-amber-700 border border-amber-200" : "bg-emerald-100 text-emerald-700 border border-emerald-200");
                 let barColor = isFull ? "bg-gray-400" : (percentage >= 60 ? "bg-amber-500" : "bg-emerald-500");
-                //Mensaje y redirigimiento a WhatsApp
-                const formattedDate = new Date(dateStr).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                const encodedMessage = encodeURIComponent(`Hola Taller Bautista, me gustaría reservar una cita para mi vehículo el día ${formattedDate} en el horario de ${slot}. ¿Tienen disponibilidad?`);
-                const waLink = `https://wa.me/50377387374?text=${encodedMessage}`;
 
-                const card = document.createElement(isFull ? 'div' : 'a');
-                if(!isFull) card.href = waLink;
-                if(!isFull) card.target = "_blank";
+                const card = document.createElement('button');
+                card.type = "button";
+                if(isFull) card.disabled = true;
 
-                card.className = `p-5 rounded-2xl border flex items-center justify-between relative overflow-hidden group ${cardColor} w-full`;
+                if(!isFull){
+                    card.onclick = () => openWhatsAppModal(dateStr, slot);
+                }
+
+                card.className = `p-5 rounded-2xl border flex items-center justify-between relative overflow-hidden group ${cardColor} w-full text-left`;
                 
-                // Rediseño de tarjeta: Soluciona problema de superposición de texto de WhatsApp 
                 card.innerHTML = `
                     <div class="absolute top-0 left-0 h-full w-1.5 ${barColor} opacity-80 group-hover:opacity-100 transition-opacity"></div>
                     <div class="flex items-center text-lg sm:text-xl font-black text-gray-900 tracking-tight pl-3">
@@ -1062,6 +1147,46 @@
             }
         }
 
+        // =====================================================================
+        // INTEGRACIÓN CON WHATSAPP (MODAL PREVIO)
+        // =====================================================================
+        function openWhatsAppModal(dateStr, slot) {
+            document.getElementById('wa-date').value = dateStr;
+            document.getElementById('wa-slot').value = slot;
+
+            const formattedDate = new Date(dateStr).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            // Mensaje preliminar editable
+            document.getElementById('wa-message').value = `Hola Taller Bautista, me gustaría reservar un espacio para mi vehículo el día ${formattedDate} en el horario de ${slot}. ¿Tienen disponibilidad?`;
+            
+            openModal('modal-whatsapp');
+        }
+
+        function sendWhatsApp(withData) {
+            const dateStr = document.getElementById('wa-date').value;
+            const slot = document.getElementById('wa-slot').value;
+            let msg = document.getElementById('wa-message').value;
+
+            if (withData) {
+                const name = document.getElementById('wa-name').value.trim();
+                const phone = document.getElementById('wa-phone').value.trim();
+                const email = document.getElementById('wa-email').value.trim();
+                
+                if(!name || !phone) {
+                    showToast("El nombre y teléfono son obligatorios para enviar con datos.", "error");
+                    return;
+                }
+
+                // Autocompletar datos en el mensaje de whatsapp
+                msg = `*Solicitud de Pre-Reserva*\n--------------------\n*Cliente:* ${name}\n*Teléfono:* ${phone}\n${email ? '*Correo:* ' + email + '\n' : ''}--------------------\n*Mensaje:* ${msg}`;
+            }
+
+            const encodedMessage = encodeURIComponent(msg);
+            const waLink = `https://wa.me/50370000000?text=${encodedMessage}`;
+            window.open(waLink, '_blank');
+            closeModal('modal-whatsapp');
+        }
+
         function renderDashboard() {
             if (state.role === 'secretaria') renderSecretaryView();
             else if (state.role === 'jefe') renderJefeView();
@@ -1096,7 +1221,7 @@
 
             let filtered = state.appointments.filter(a => {
                 const hour = parseInt(a.timeSlot.split(':')[0]);
-                const shift = hour < 12 ? 'MATUTINO' : 'VESPERTINO';
+                const shift = hour < 12 ? 'MANANA' : 'TARDE';
 
                 const matchesSearch = a.clientName.toLowerCase().includes(search) || a.placa.toLowerCase().includes(search) || a.dui.toLowerCase().includes(search) || a.id.toLowerCase().includes(search);
                 const matchesStatus = filterStatus === 'ALL' || a.status === filterStatus;
@@ -1338,7 +1463,7 @@
         }
 
         // =====================================================================
-        // VISTA JEFE DE TALLER (Kanban con Filtros)
+        // VISTA JEFE DE TALLER (Kanban con Filtros y Fast-Track)
         // =====================================================================
         function renderJefeView() {
             const filterDate = document.getElementById('jefe-filter-date').value;
@@ -1352,7 +1477,7 @@
                     if (a.kanbanStep !== step || a.status === 'CANCELADO') return false;
 
                     const hour = parseInt(a.timeSlot.split(':')[0]);
-                    const shift = hour < 12 ? 'MATUTINO' : 'VESPERTINO';
+                    const shift = hour < 12 ? 'MANANA' : 'TARDE';
 
                     const matchesDate = !filterDate || a.date === filterDate;
                     const matchesShift = filterShift === 'ALL' || shift === filterShift;
@@ -1370,6 +1495,12 @@
                 items.forEach(a => {
                     const card = document.createElement('div');
                     card.className = "bg-white p-5 rounded-2xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all space-y-3 cursor-pointer group";
+                    
+                    // Botón Finalizar directo (Fast Track a completado) si no está ya en el paso 4
+                    const finalizeBtn = step < 4 
+                        ? `<button onclick="moveKanban('${a.id}', 4)" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 hover:shadow-sm px-2 py-1.5 rounded-lg transition-all flex items-center gap-1"><i class="fa-solid fa-check-double"></i> Finalizar</button>` 
+                        : '<span></span>';
+
                     card.innerHTML = `
                         <div class="flex justify-between items-start">
                             <span class="px-3 py-1 rounded-lg bg-gray-900 text-white font-mono font-black text-xs shadow-sm">${a.placa}</span>
@@ -1388,9 +1519,10 @@
                             <span class="truncate pr-2 font-bold"><i class="fa-regular fa-clock mr-1 text-gray-400"></i>${a.timeSlot}</span>
                             <span class="font-bold text-gray-400">${a.date}</span>
                         </div>
-                        <div class="flex justify-between pt-2 border-t border-gray-100 mt-2">
-                            ${step > 1 ? `<button onclick="moveKanban('${a.id}',${step - 1})" class="text-[10px] font-bold text-gray-400 hover:text-blue-500 transition-colors"><i class="fa-solid fa-arrow-left"></i> Anterior</button>` : '<span></span>'}
-                            ${step < 4 ? `<button onclick="moveKanban('${a.id}',${step + 1})" class="text-[10px] font-bold text-blue-500 hover:text-blue-700 transition-colors">Siguiente <i class="fa-solid fa-arrow-right"></i></button>` : '<span></span>'}
+                        <div class="flex justify-between items-center pt-2 border-t border-gray-100 mt-2">
+                            ${step > 1 ? `<button onclick="moveKanban('${a.id}',${step - 1})" class="text-[10px] font-bold text-gray-400 hover:text-blue-500 transition-colors bg-gray-50 px-2 py-1.5 rounded-lg"><i class="fa-solid fa-arrow-left"></i> Ant.</button>` : '<span></span>'}
+                            ${finalizeBtn}
+                            ${step < 4 ? `<button onclick="moveKanban('${a.id}',${step + 1})" class="text-[10px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 hover:shadow-sm px-2 py-1.5 rounded-lg transition-all flex items-center gap-1">Sig. <i class="fa-solid fa-arrow-right"></i></button>` : '<span></span>'}
                         </div>
                     `;
                     col.appendChild(card);
