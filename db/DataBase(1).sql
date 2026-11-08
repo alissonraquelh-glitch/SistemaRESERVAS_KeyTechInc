@@ -1,6 +1,5 @@
 -- =====================================================================
--- BookIt · Migración 001 · Esquema inicial (MySQL 8.0+)
--- Ubicación sugerida: db/migrations/001_esquema_inicial.sql
+-- BookIt · Migración / Esquema V6 (PostgreSQL)
 -- =====================================================================
 
 START TRANSACTION;
@@ -65,7 +64,7 @@ CREATE TABLE vehiculo (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- 3. Configuración de agenda
+-- 3. Configuración de agenda (Incluye capacidad_maxima para V6)
 -- ---------------------------------------------------------------------
 CREATE TABLE configuracion_agenda (
     id_configuracion     SMALLINT AUTO_INCREMENT PRIMARY KEY,
@@ -73,11 +72,13 @@ CREATE TABLE configuracion_agenda (
     hora_apertura        TIME     NOT NULL,
     hora_cierre          TIME     NOT NULL,
     duracion_bloque_min  SMALLINT NOT NULL,
+    capacidad_maxima     SMALLINT NOT NULL DEFAULT 1,
     activo               BOOLEAN  NOT NULL DEFAULT TRUE,
     UNIQUE KEY uq_config_dia (dia_semana),
     CONSTRAINT ck_config_dia CHECK (dia_semana BETWEEN 0 AND 6),
     CONSTRAINT ck_config_duracion CHECK (duracion_bloque_min > 0),
-    CONSTRAINT ck_config_horas CHECK (hora_cierre > hora_apertura)
+    CONSTRAINT ck_config_horas CHECK (hora_cierre > hora_apertura),
+    CONSTRAINT ck_config_capacidad CHECK (capacidad_maxima BETWEEN 1 AND 15)
 ) ENGINE=InnoDB;
 
 CREATE TABLE bloqueo_agenda (
@@ -96,18 +97,19 @@ CREATE TABLE bloqueo_agenda (
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------
--- 4. Cita
+-- 4. Cita (Incluye servicio_codigo para V6)
 -- ---------------------------------------------------------------------
 CREATE TABLE cita (
-    id_cita     VARCHAR(36) NOT NULL DEFAULT (UUID()),
-    placa       VARCHAR(12) NOT NULL,
-    inicio      DATETIME    NOT NULL,
-    fin         DATETIME    NOT NULL,
-    estado      ENUM('PENDIENTE', 'COMPLETADA', 'CANCELADA') NOT NULL DEFAULT 'PENDIENTE',
-    origen      ENUM('WEB', 'TELEFONO') NOT NULL DEFAULT 'WEB',
-    creada_por  VARCHAR(36) DEFAULT NULL,
-    notas       TEXT        DEFAULT NULL,
-    creada_en   DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_cita         VARCHAR(36) NOT NULL DEFAULT (UUID()),
+    placa           VARCHAR(12) NOT NULL,
+    inicio          DATETIME    NOT NULL,
+    fin             DATETIME    NOT NULL,
+    estado          ENUM('PENDIENTE', 'COMPLETADA', 'CANCELADA') NOT NULL DEFAULT 'PENDIENTE',
+    origen          ENUM('WEB', 'TELEFONO') NOT NULL DEFAULT 'WEB',
+    creada_por      VARCHAR(36) DEFAULT NULL,
+    servicio_codigo VARCHAR(50) NOT NULL,
+    notas           TEXT        DEFAULT NULL,
+    creado_en       DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id_cita),
     KEY ix_cita_placa (placa),
     KEY ix_cita_inicio (inicio, estado),
