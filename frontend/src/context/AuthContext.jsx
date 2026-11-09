@@ -1,91 +1,105 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { ROLES, canAccessView } from '../adapters/authAdapter';
-import { useToast } from './ToastContext';
-
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { ROLES, canAccessView } from "../adapters/authAdapter";
+import { apiRequest, setCsrfToken } from "../services/api/client";
+import { API_ROUTES as R } from "../services/api/routes";
+import { useToast } from "./ToastContext";
 const AuthContext = createContext(null);
-
+const mapUser = (u) => ({
+  id: u.id_usuario,
+  email: u.correo,
+  name: u.nombre_completo,
+  role: {
+    ADMIN: "admin",
+    DUENO: "admin",
+    SECRETARIA: "secretaria",
+    JEFE_TALLER: "jefe",
+  }[u.rol],
+});
 export function AuthProvider({ children }) {
   const { showToast } = useToast();
-  const [currentUser, setCurrentUser] = useState(null); // { email, role, name }
-  const [activeInternalView, setActiveInternalView] = useState(ROLES.SECRETARIA);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-
-  // Intentar login
+  const navigate = useNavigate();
+  const [currentUser, setCurrentUser] = useState(null),
+    [initializing, setInitializing] = useState(true),
+    [sessionError, setSessionError] = useState(null);
+  const [activeInternalView, setActiveInternalView] = useState(
+      ROLES.SECRETARIA,
+    ),
+    [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const accept = useCallback((data) => {
+    const user = mapUser(data.usuario);
+    setCsrfToken(data.csrf);
+    setCurrentUser(user);
+    setActiveInternalView(user.role);
+  }, []);
+  useEffect(() => {
+    const c = new AbortController();
+    apiRequest(R.AUTH_ME, { signal: c.signal })
+      .then((r) => accept(r.data))
+      .catch((e) => {
+        if (e.name !== "AbortError" && e.status !== 401)
+          setSessionError(e.message);
+      })
+      .finally(() => {
+        if (!c.signal.aborted) setInitializing(false);
+      });
+    return () => c.abort();
+  }, [accept]);
+  useEffect(() => {
+    const clear = () => {
+      setCurrentUser(null);
+      setCsrfToken("");
+    };
+    window.addEventListener("bookit:unauthorized", clear);
+    return () => window.removeEventListener("bookit:unauthorized", clear);
+  }, []);
   const login = useCallback(
     async (email, password) => {
-      // Validación básica de entrada
-      if (!email || !email.includes('@')) {
-        showToast("Formato de correo inválido.", "error");
+      try {
+        const r = await apiRequest(R.AUTH_LOGIN, {
+          body: { correo: email.trim(), password },
+        });
+        accept(r.data);
+        setSessionError(null);
+        setIsLoginModalOpen(false);
+        navigate("/personal");
+        return true;
+      } catch (e) {
+        showToast(e.message, "error");
         return false;
       }
-      if (!password || password.length < 4) {
-        showToast("La contraseña debe tener mínimo 4 caracteres.", "error");
-        return false;
-      }
-
-      const cleanEmail = email.trim().toLowerCase();
-
-      // NOTA DE SEGURIDAD / INTEGRACIÓN:
-      // Sin endpoint real en backend, se provee soporte controlado para pruebas locales de roles
-      // sin quemar contraseñas como verdad del sistema de producción.
-      let detectedRole = ROLES.SECRETARIA;
-      let userName = 'Personal Taller Bautista';
-
-      if (cleanEmail.includes('admin') || cleanEmail.includes('josue')) {
-        detectedRole = ROLES.ADMIN;
-        userName = 'Administrador General';
-      } else if (cleanEmail.includes('jefe') || cleanEmail.includes('nacho')) {
-        detectedRole = ROLES.JEFE;
-        userName = 'Jefe de Taller';
-      } else {
-        detectedRole = ROLES.SECRETARIA;
-        userName = 'Secretaría de Recepción';
-      }
-
-      setCurrentUser({
-        email: cleanEmail,
-        role: detectedRole,
-        name: userName,
-      });
-
-      // Vista inicial según el rol asignado
-      if (detectedRole === ROLES.JEFE) {
-        setActiveInternalView(ROLES.JEFE);
-      } else if (detectedRole === ROLES.ADMIN) {
-        setActiveInternalView(ROLES.ADMIN);
-      } else {
-        setActiveInternalView(ROLES.SECRETARIA);
-      }
-
-      setIsLoginModalOpen(false);
-      showToast(`Autenticación exitosa como [${detectedRole.toUpperCase()}]. Bienvenido.`, "success");
-      return true;
     },
-    [showToast]
+    [accept, navigate, showToast],
   );
-
-  const logout = useCallback(() => {
-    setCurrentUser(null);
-    setActiveInternalView(ROLES.SECRETARIA);
-    showToast("Sesión cerrada correctamente.", "info");
-  }, [showToast]);
-
+  const logout = useCallback(async () => {
+    try {
+      await apiRequest(R.AUTH_LOGOUT);
+      setCurrentUser(null);
+      setCsrfToken("");
+      navigate("/");
+      showToast("Sesión cerrada.", "info");
+    } catch (e) {
+      showToast(e.message, "error");
+    }
+  }, [navigate, showToast]);
   const switchInternalView = useCallback(
-    (targetView) => {
-      if (!currentUser) return;
-      if (!canAccessView(currentUser.role, targetView)) {
-        showToast("Acceso denegado: Tu rol solo permite visualizar tu panel asignado.", "error");
-        return;
-      }
-      setActiveInternalView(targetView);
+    (view) => {
+      if (canAccessView(currentUser?.role, view)) setActiveInternalView(view);
     },
-    [currentUser, showToast]
+    [currentUser],
   );
-
   return (
     <AuthContext.Provider
       value={{
         currentUser,
+        initializing,
+        sessionError,
         isAuthenticated: !!currentUser,
         activeInternalView,
         isLoginModalOpen,
@@ -99,11 +113,6 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-
 export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return ctx;
+  return useContext(AuthContext);
 }

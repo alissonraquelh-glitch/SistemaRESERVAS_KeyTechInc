@@ -1,11 +1,14 @@
-import React from 'react';
-import { calculateSlotOccupancy } from '../../utils/timeSlots';
+import React from "react";
+import { calculateSlotOccupancy } from "../../utils/timeSlots";
 
-export default function TimeSlotCard({ slot, bookedCount, maxCapacity, onSelectSlot }) {
-  const { isFull, statusText, badgeColor, barColor, cardColor } = calculateSlotOccupancy(
-    bookedCount,
-    maxCapacity
-  );
+export default function TimeSlotCard({
+  slot,
+  bookedCount,
+  maxCapacity,
+  onSelectSlot,
+}) {
+  const { isFull, statusText, badgeColor, barColor, cardColor } =
+    calculateSlotOccupancy(bookedCount, maxCapacity);
 
   return (
     <button
@@ -21,7 +24,10 @@ export default function TimeSlotCard({ slot, bookedCount, maxCapacity, onSelectS
 
       {/* Intervalo de horas */}
       <div className="flex items-center text-lg sm:text-xl font-black text-gray-900 tracking-tight pl-3">
-        <i className="fa-regular fa-clock text-gray-400 mr-2 sm:mr-3 text-base sm:text-lg"></i>
+        <i
+          aria-hidden="true"
+          className="fa-regular fa-clock text-gray-400 mr-2 sm:mr-3 text-base sm:text-lg"
+        ></i>
         <span>{slot}</span>
       </div>
 
@@ -35,7 +41,7 @@ export default function TimeSlotCard({ slot, bookedCount, maxCapacity, onSelectS
 
         {!isFull && (
           <div className="bg-emerald-50 text-emerald-600 w-10 h-10 rounded-xl flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors shadow-sm ml-1">
-            <i className="fa-brands fa-whatsapp text-xl"></i>
+            <i aria-hidden="true" className="fa-brands fa-whatsapp text-xl"></i>
           </div>
         )}
       </div>

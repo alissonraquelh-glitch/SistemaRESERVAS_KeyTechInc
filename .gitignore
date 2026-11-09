@@ -1,3 +1,8 @@
 node_modules
 docs
 .env
+.npm-cache/
+.test-runtime/
+dist/
+playwright-report/
+test-results/

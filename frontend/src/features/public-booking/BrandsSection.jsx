@@ -1,10 +1,19 @@
-import React from 'react';
-import { SERVICES_CATALOG } from '../../config/agenda';
+import React from "react";
+import { useAgenda } from "../../context/AgendaContext";
 
 export default function BrandsSection() {
+  const { services, publicError } = useAgenda();
   const brands = [
-    'Toyota', 'Nissan', 'Honda', 'Hyundai', 'Kia',
-    'Isuzu', 'Hino', 'Mitsubishi', 'Ford', 'Chevrolet'
+    "Toyota",
+    "Nissan",
+    "Honda",
+    "Hyundai",
+    "Kia",
+    "Isuzu",
+    "Hino",
+    "Mitsubishi",
+    "Ford",
+    "Chevrolet",
   ];
 
   return (
@@ -45,27 +54,36 @@ export default function BrandsSection() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {SERVICES_CATALOG.map((srv, idx) => {
+            {services.map((srv, idx) => {
               const icons = [
-                'fa-oil-can',
-                'fa-microchip',
-                'fa-compact-disc',
-                'fa-arrows-to-dot',
+                "fa-oil-can",
+                "fa-microchip",
+                "fa-compact-disc",
+                "fa-arrows-to-dot",
               ];
               return (
                 <div
-                  key={srv.id}
+                  key={srv.codigo}
                   className="p-6 rounded-3xl bg-gray-50/60 border border-gray-200 hover:border-bautista-red/40 hover:bg-white transition-all space-y-3 group"
                 >
                   <div className="w-12 h-12 rounded-2xl bg-white border border-gray-200 text-bautista-red flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                    <i className={`fa-solid ${icons[idx % icons.length]}`}></i>
+                    <i
+                      aria-hidden="true"
+                      className={`fa-solid ${icons[idx % icons.length]}`}
+                    ></i>
                   </div>
-                  <h4 className="font-black text-gray-900 text-base">{srv.name}</h4>
-                  <p className="text-xs text-gray-500 leading-relaxed">{srv.description}</p>
+                  <h4 className="font-black text-gray-900 text-base">
+                    {srv.nombre}
+                  </h4>
                 </div>
               );
             })}
           </div>
+          {publicError && (
+            <p role="alert" className="text-red-700 text-sm mt-3">
+              No se pudo cargar el catálogo: {publicError}
+            </p>
+          )}
         </div>
       </div>
     </section>

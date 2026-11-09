@@ -1,71 +1,87 @@
-import React, { useState } from 'react';
-import { useAgenda } from '../../context/AgendaContext';
-import KpiCards from './KpiCards';
-import AppointmentsTable from './AppointmentsTable';
-import ManualBookingModal from './ManualBookingModal';
-import EditBookingModal from './EditBookingModal';
-
+import { useState } from "react";
+import { useAgenda } from "../../context/AgendaContext";
+import { useApiQuery } from "../../hooks/useApiQuery";
+import { API_ROUTES as R } from "../../services/api/routes";
+import { toUIAppointment } from "../../adapters/appointmentAdapter";
+import RequestState from "../../components/ui/RequestState";
+import KpiCards from "./KpiCards";
+import AppointmentsTable from "./AppointmentsTable";
+import ManualBookingModal from "./ManualBookingModal";
+import EditBookingModal from "./EditBookingModal";
 export default function SecretaryView() {
-  const { appointments, changeAppointmentStatus } = useAgenda();
-  const [isManualModalOpen, setIsManualModalOpen] = useState(false);
-  const [selectedAppointment, setSelectedAppointment] = useState(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  const handleEdit = (appointment) => {
-    setSelectedAppointment(appointment);
-    setIsEditModalOpen(true);
+  const { services, changeAppointmentStatus } = useAgenda();
+  const [filters, setFilters] = useState({
+    q: "",
+    fecha: "",
+    turno: "ALL",
+    estado: "ALL",
+    limit: 25,
+    offset: 0,
+  });
+  const [manual, setManual] = useState(false),
+    [selected, setSelected] = useState(null),
+    [busy, setBusy] = useState(false);
+  const list = useApiQuery(R.CITAS_LIST, filters),
+    summary = useApiQuery(R.CITAS_SUMMARY);
+  const appointments = (list.response?.data || []).map((r) =>
+    toUIAppointment(r, services),
+  );
+  const change = async (id, status) => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await changeAppointmentStatus(
+        id,
+        status,
+        appointments.find((a) => a.id === id)?.detailedStatus,
+      );
+    } finally {
+      setBusy(false);
+    }
   };
-
   return (
     <div className="space-y-8 fade-in">
-      {/* Encabezado y Acción Principal */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border border-gray-200 shadow-sm">
+      <div className="bg-white p-6 rounded-3xl border shadow-soft flex flex-wrap gap-4 justify-between">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <h2 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
-              Recepción y Control de Citas (Secretaría)
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Gestión integral de reservas, atención telefónica, cambios de estado y reprogramaciones.
+          <h2 className="text-xl font-black">
+            Recepción y Control de Citas (Secretaría)
+          </h2>
+          <p className="text-sm text-gray-500">
+            Gestión de reservas, atención y reprogramaciones.
           </p>
         </div>
-
         <button
-          type="button"
-          onClick={() => setIsManualModalOpen(true)}
-          className="px-5 py-3 rounded-2xl bg-bautista-red hover:bg-bautista-darkRed text-white font-bold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 transform hover:-translate-y-0.5 shrink-0"
+          className="bg-bautista-red text-white font-bold px-5 py-3 rounded-2xl"
+          onClick={() => setManual(true)}
         >
-          <i className="fa-solid fa-plus-circle text-base"></i>
-          <span>Registrar Cita Manual</span>
+          Registrar Cita Manual
         </button>
       </div>
-
-      {/* Tarjetas KPI */}
-      <KpiCards appointments={appointments} />
-
-      {/* Tabla Dinámica con Filtros */}
+      <RequestState
+        loading={summary.loading}
+        error={summary.error}
+        onRetry={summary.reload}
+      />
+      {summary.response && <KpiCards summary={summary.response.data} />}
+      <RequestState
+        loading={list.loading}
+        error={list.error}
+        onRetry={list.reload}
+      />
       <AppointmentsTable
         appointments={appointments}
-        onEditAppointment={handleEdit}
-        onChangeStatus={changeAppointmentStatus}
+        filters={filters}
+        setFilters={setFilters}
+        pagination={list.response?.pagination}
+        onEditAppointment={setSelected}
+        onChangeStatus={change}
+        busy={busy || list.loading}
       />
-
-      {/* Modal de Alta Manual */}
-      <ManualBookingModal
-        isOpen={isManualModalOpen}
-        onClose={() => setIsManualModalOpen(false)}
-      />
-
-      {/* Modal de Edición */}
+      <ManualBookingModal isOpen={manual} onClose={() => setManual(false)} />
       <EditBookingModal
-        isOpen={isEditModalOpen}
-        onClose={() => {
-          setIsEditModalOpen(false);
-          setSelectedAppointment(null);
-        }}
-        appointment={selectedAppointment}
+        isOpen={!!selected}
+        appointment={selected}
+        onClose={() => setSelected(null)}
       />
     </div>
   );

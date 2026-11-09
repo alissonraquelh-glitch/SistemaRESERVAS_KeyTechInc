@@ -1,118 +1,97 @@
-import React, { useState } from 'react';
-import { useAgenda } from '../../context/AgendaContext';
-import { useToast } from '../../context/ToastContext';
-import { getTodayCivilDate } from '../../utils/dateUtils';
-
+import { useState } from "react";
+import { useAgenda } from "../../context/AgendaContext";
+import { useApiQuery } from "../../hooks/useApiQuery";
+import { API_ROUTES as R } from "../../services/api/routes";
+import { getTodayCivilDate } from "../../utils/dateUtils";
+import RequestState from "../../components/ui/RequestState";
 export default function BlockedDatesManager() {
-  const { config, addBlockedDate, removeBlockedDate } = useAgenda();
-  const { showToast } = useToast();
-
-  const [date, setDate] = useState('');
-  const [reason, setReason] = useState('');
-
-  const handleAddBlock = (e) => {
+  const { addBlockedDate, removeBlockedDate } = useAgenda();
+  const query = useApiQuery(R.BLOQUEOS_LIST);
+  const [date, setDate] = useState(""),
+    [reason, setReason] = useState(""),
+    [busy, setBusy] = useState(false);
+  const add = async (e) => {
     e.preventDefault();
-    if (!date) {
-      showToast("Seleccione una fecha a bloquear.", "error");
-      return;
-    }
-    const success = addBlockedDate(date, reason.trim() || 'Cierre Administrativo');
-    if (success) {
-      setDate('');
-      setReason('');
+    if (busy) return;
+    setBusy(true);
+    try {
+      if (await addBlockedDate(date, reason)) {
+        setDate("");
+        setReason("");
+      }
+    } finally {
+      setBusy(false);
     }
   };
-
+  const remove = async (id) => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await removeBlockedDate(id);
+    } finally {
+      setBusy(false);
+    }
+  };
   return (
-    <div className="bg-white p-6 sm:p-8 rounded-3xl border border-gray-200 shadow-sm space-y-6">
-      <div className="border-b border-gray-100 pb-4">
-        <h3 className="text-lg font-black text-gray-900 tracking-tight flex items-center gap-2">
-          <i className="fa-solid fa-calendar-xmark text-amber-500"></i>
-          <span>Gestión de Cierres de Agenda (Fechas Bloqueadas)</span>
-        </h3>
-        <p className="text-xs text-gray-500 mt-1">
-          Suspende la disponibilidad de fechas completas por festivos, capacitaciones o mantenimiento general.
-        </p>
-      </div>
-
-      {/* Formulario de Nuevo Bloqueo */}
-      <form onSubmit={handleAddBlock} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
-        <div className="sm:col-span-4">
-          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
-            Fecha a Bloquear *
-          </label>
+    <section className="bg-white rounded-3xl border shadow-soft p-6 space-y-4">
+      <h3 className="text-lg font-black">Cierres de agenda</h3>
+      <RequestState
+        loading={query.loading}
+        error={query.error}
+        onRetry={query.reload}
+      />
+      <form onSubmit={add} className="flex flex-wrap gap-3 items-end">
+        <label className="text-xs font-bold">
+          Fecha
           <input
+            className="block border rounded-xl p-3"
             type="date"
             required
             min={getTodayCivilDate()}
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm font-bold text-gray-900 outline-none focus:ring-2 focus:ring-bautista-red"
           />
-        </div>
-
-        <div className="sm:col-span-6">
-          <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
-            Motivo Público Visible *
-          </label>
+        </label>
+        <label className="text-xs font-bold flex-1">
+          Motivo público
           <input
-            type="text"
+            className="block border rounded-xl p-3 w-full"
             required
-            placeholder="Ej: Asueto Nacional / Mantenimiento Eléctrico"
+            maxLength={200}
             value={reason}
             onChange={(e) => setReason(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl border border-gray-300 text-xs sm:text-sm outline-none focus:ring-2 focus:ring-bautista-red"
           />
-        </div>
-
-        <div className="sm:col-span-2">
-          <button
-            type="submit"
-            className="w-full py-2.5 rounded-xl bg-gray-900 hover:bg-black text-white font-bold text-xs shadow-md transition-all flex items-center justify-center gap-1.5"
-          >
-            <i className="fa-solid fa-plus"></i>
-            <span>Bloquear</span>
-          </button>
-        </div>
+        </label>
+        <button
+          disabled={busy}
+          className="bg-bautista-red text-white rounded-xl p-3 font-bold"
+        >
+          Cerrar fecha
+        </button>
       </form>
-
-      {/* Listado de Fechas Bloqueadas */}
-      <div className="space-y-2 pt-2">
-        <span className="text-xs font-black uppercase tracking-wider text-gray-400 block">
-          Fechas Actualmente Bloqueadas ({config.blockedDates.length})
-        </span>
-
-        {config.blockedDates.length === 0 ? (
-          <div className="text-xs text-gray-400 italic p-4 text-center border-2 border-dashed border-gray-200 rounded-2xl">
-            No hay fechas bloqueadas programadas en este momento.
+      <div className="grid sm:grid-cols-2 gap-3">
+        {(query.response?.data || []).map((b) => (
+          <div
+            className="p-4 bg-gray-50 rounded-xl flex justify-between gap-3"
+            key={b.id_bloqueo}
+          >
+            <div>
+              <strong>{b.fecha}</strong>
+              <p className="text-sm">{b.motivo}</p>
+            </div>
+            <button
+              disabled={busy}
+              onClick={() => remove(b.id_bloqueo)}
+              className="text-red-600 text-sm font-bold"
+            >
+              Retirar cierre
+            </button>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {config.blockedDates.map((b, index) => (
-              <div
-                key={b.date}
-                className="flex items-center justify-between p-3.5 bg-gray-50 border border-gray-200 rounded-2xl"
-              >
-                <div>
-                  <div className="font-bold text-gray-900 text-xs sm:text-sm">{b.date}</div>
-                  <div className="text-[11px] text-gray-500 font-medium uppercase tracking-wide">
-                    {b.reason}
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => removeBlockedDate(index)}
-                  title="Eliminar Bloqueo"
-                  className="w-8 h-8 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-700 flex items-center justify-center transition-colors"
-                >
-                  <i className="fa-solid fa-trash text-xs"></i>
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+        ))}
       </div>
-    </div>
+      {query.response && !query.response.data.length && (
+        <p className="text-gray-400">No hay cierres programados.</p>
+      )}
+    </section>
   );
 }
