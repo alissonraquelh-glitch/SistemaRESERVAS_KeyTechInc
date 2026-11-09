@@ -1,4 +1,4 @@
-# Sistema de reservas · Taller Bautista V6
+# Sistema de reservas · Taller Bautista V7
 
 Backend Express/MySQL y frontend React/Vite conectados mediante `/api`. Se conservan ocho tablas y se registra cliente, vehículo, cita y auditoría en una sola transacción.
 
