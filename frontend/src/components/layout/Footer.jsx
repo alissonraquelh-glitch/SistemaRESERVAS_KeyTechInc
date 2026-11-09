@@ -1,11 +1,20 @@
-import React from 'react';
-import { CONTACTS_CONFIG } from '../../config/contacts';
-import { useAuth } from '../../context/AuthContext';
-import { useAgenda } from '../../context/AgendaContext';
+import React from "react";
+import { CONTACTS_CONFIG } from "../../config/contacts";
+import { useAuth } from "../../context/AuthContext";
+import { useAgenda } from "../../context/AgendaContext";
 
 export default function Footer({ onSwitchToEmployee }) {
   const { setIsLoginModalOpen, isAuthenticated } = useAuth();
-  const { config } = useAgenda();
+  const { weekdays, publicError } = useAgenda();
+  const dayNames = [
+    "Domingo",
+    "Lunes",
+    "Martes",
+    "Miércoles",
+    "Jueves",
+    "Viernes",
+    "Sábado",
+  ];
 
   const handleLockClick = () => {
     if (!isAuthenticated) {
@@ -25,12 +34,10 @@ export default function Footer({ onSwitchToEmployee }) {
               {CONTACTS_CONFIG.companyName}
             </div>
             <p className="text-gray-400 text-xs leading-relaxed">
-              Especialistas en mecánica preventiva y correctiva para vehículos livianos y pesados.
-              Compromiso, garantía y tecnología en San Miguel.
+              Especialistas en mecánica preventiva y correctiva para vehículos
+              livianos y pesados. Compromiso, garantía y tecnología en San
+              Miguel.
             </p>
-            <div className="text-[11px] text-gray-500 font-mono">
-              V6.4 · React + Vite Edition
-            </div>
           </div>
 
           {/* Columna 2: Ubicación */}
@@ -47,7 +54,7 @@ export default function Footer({ onSwitchToEmployee }) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 font-bold transition-colors"
             >
-              <i className="fa-solid fa-location-dot"></i>
+              <i aria-hidden="true" className="fa-solid fa-location-dot"></i>
               <span>Abrir en Google Maps</span>
             </a>
           </div>
@@ -57,16 +64,26 @@ export default function Footer({ onSwitchToEmployee }) {
             <div className="font-bold text-gray-200 uppercase tracking-wider text-xs">
               Horario de Atención
             </div>
-            <p className="text-gray-400 text-xs leading-relaxed">
-              Lunes a Viernes:
-              <br />
-              <span className="font-bold text-white">
-                {config.openHour} - {config.closeHour}
-              </span>
-            </p>
-            <p className="text-gray-500 text-[11px]">
-              Sábados y Domingos: Cerrado por mantenimiento y descanso.
-            </p>
+            {weekdays.map((day) => (
+              <p
+                key={day.dia_semana}
+                className="text-gray-400 text-xs flex justify-between gap-3"
+              >
+                <span>{dayNames[day.dia_semana]}</span>
+                <span className="font-bold text-white">
+                  {day.activo
+                    ? `${day.hora_apertura.slice(0, 5)} - ${day.hora_cierre.slice(0, 5)}`
+                    : "Cerrado"}
+                </span>
+              </p>
+            ))}
+            {!weekdays.length && (
+              <p className="text-gray-400 text-xs">
+                {publicError
+                  ? "Horario no disponible."
+                  : "Consultando horario…"}
+              </p>
+            )}
           </div>
 
           {/* Columna 4: Contacto & Aviso */}
@@ -92,8 +109,12 @@ export default function Footer({ onSwitchToEmployee }) {
               </div>
             </div>
             <div className="p-2.5 bg-white/5 rounded-xl border border-white/10 text-[11px] text-gray-400 leading-normal">
-              <i className="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i>
-              La solicitud enviada por WhatsApp es preliminar y no constituye confirmación automática de cupo.
+              <i
+                aria-hidden="true"
+                className="fa-solid fa-triangle-exclamation text-amber-400 mr-1"
+              ></i>
+              La solicitud enviada por WhatsApp es preliminar y no constituye
+              confirmación automática de cupo.
             </div>
           </div>
         </div>
@@ -101,7 +122,8 @@ export default function Footer({ onSwitchToEmployee }) {
         {/* Barra inferior */}
         <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <div>
-            &copy; {new Date().getFullYear()} Grupo Bautista · Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} Grupo Bautista · Todos los
+            derechos reservados.
           </div>
 
           <div className="flex items-center gap-4">
@@ -114,7 +136,7 @@ export default function Footer({ onSwitchToEmployee }) {
               className="w-8 h-8 rounded-lg bg-white/5 hover:bg-white/15 text-gray-400 hover:text-white flex items-center justify-center transition-colors"
               aria-label="Acceso para empleados"
             >
-              <i className="fa-solid fa-lock text-xs"></i>
+              <i aria-hidden="true" className="fa-solid fa-lock text-xs"></i>
             </button>
           </div>
         </div>

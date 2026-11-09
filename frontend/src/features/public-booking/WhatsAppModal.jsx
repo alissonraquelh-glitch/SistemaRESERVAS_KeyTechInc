@@ -1,30 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import Modal from '../../components/ui/Modal';
-import { CONTACTS_CONFIG } from '../../config/contacts';
-import { formatDateLongEs } from '../../utils/dateUtils';
+import React, { useState, useEffect, useId } from "react";
+import Modal from "../../components/ui/Modal";
+import { CONTACTS_CONFIG } from "../../config/contacts";
+import { formatDateLongEs } from "../../utils/dateUtils";
 import {
   formatPhone,
   validateName,
   validatePhone,
   validateEmail,
   buildWhatsAppLink,
-} from '../../utils/formatters';
-import { useToast } from '../../context/ToastContext';
+} from "../../utils/formatters";
+import { useToast } from "../../context/ToastContext";
 
 export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
   const { showToast } = useToast();
+  const fieldId = useId();
 
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   // Generar mensaje inicial al abrir
   useEffect(() => {
     if (isOpen && dateStr && slot) {
       const friendlyDate = formatDateLongEs(dateStr);
       setMessage(
-        `Hola Taller Bautista, me gustaría reservar un espacio para mi vehículo el día ${friendlyDate} en el horario de ${slot}. ¿Tienen disponibilidad?`
+        `Hola Taller Bautista, quisiera consultar la disponibilidad para llevar mi vehículo el ${friendlyDate}, en el horario de ${slot}. ¿Podrían ayudarme a coordinar una cita?`,
       );
     }
   }, [isOpen, dateStr, slot]);
@@ -40,32 +41,38 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
       if (!validateName(name)) {
         showToast(
           "El nombre es obligatorio y solo debe contener letras y espacios.",
-          "error"
+          "error",
         );
         return;
       }
       if (!validatePhone(phone)) {
         showToast(
           "El teléfono es obligatorio y debe tener al menos 8 dígitos.",
-          "error"
+          "error",
         );
         return;
       }
       if (email.trim() && !validateEmail(email)) {
-        showToast("El correo electrónico ingresado no tiene un formato válido.", "error");
+        showToast(
+          "El correo electrónico ingresado no tiene un formato válido.",
+          "error",
+        );
         return;
       }
 
-      const emailStr = email.trim() || 'No ingresado';
+      const emailStr = email.trim() || "No ingresado";
 
       // Formato estructurado y natural sin emojis extraños
       finalMessage = `*¡Hola equipo de Taller Bautista!*\n\nLes comparto mis datos para agilizar mi solicitud de reserva:\n• *Nombre:* ${name.trim()}\n• *Teléfono:* ${phone.trim()}\n• *Correo:* ${emailStr}\n\n*Detalles de mi solicitud:*\n"${message.trim()}"\n\n¡Muchas gracias y quedo a la espera de su confirmación!`;
     }
 
-    const waLink = buildWhatsAppLink(CONTACTS_CONFIG.whatsAppNumber, finalMessage);
+    const waLink = buildWhatsAppLink(
+      CONTACTS_CONFIG.whatsAppNumber,
+      finalMessage,
+    );
 
     // Abrir WhatsApp en pestaña nueva
-    window.open(waLink, '_blank', 'noopener,noreferrer');
+    window.open(waLink, "_blank", "noopener,noreferrer");
     showToast("Redirigiendo a WhatsApp...", "success");
     onClose();
   };
@@ -74,30 +81,38 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Solicitud de Reserva vía WhatsApp"
-      subtitle="Complete sus datos de contacto para preparar su mensaje oficial"
-      maxWidth="max-w-xl"
+      title={<span className="block pr-4">Consultar este horario por WhatsApp</span>}
+      subtitle="Revisa la fecha y el horario. Puedes completar tus datos o continuar sin ellos."
+      maxWidth="max-w-xl max-h-[calc(100dvh-6rem)] overflow-y-auto"
     >
       <div className="space-y-5">
         {/* Resumen del turno */}
-        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex items-center justify-between text-xs sm:text-sm">
+        <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs sm:text-sm">
           <div>
-            <span className="text-gray-400 font-bold block uppercase text-[10px]">Fecha</span>
-            <span className="font-black text-gray-900">{formatDateLongEs(dateStr)}</span>
+            <span className="text-gray-400 font-bold block uppercase text-[10px]">
+              Fecha
+            </span>
+            <span className="font-black text-gray-900">
+              {formatDateLongEs(dateStr)}
+            </span>
           </div>
-          <div className="text-right">
-            <span className="text-gray-400 font-bold block uppercase text-[10px]">Horario</span>
+          <div className="sm:text-right">
+            <span className="text-gray-400 font-bold block uppercase text-[10px]">
+              Horario
+            </span>
             <span className="font-black text-bautista-red">{slot}</span>
           </div>
         </div>
 
         {/* Formulario de datos */}
         <div className="space-y-4">
+          <p className="text-xs text-gray-500">Nombre y teléfono se requieren solo si deseas incluir tus datos en el mensaje.</p>
           <div>
-            <label className="block text-xs font-black text-gray-700 uppercase mb-1">
+            <label htmlFor={`${fieldId}-name`} className="block text-xs font-black text-gray-700 uppercase mb-1">
               Nombre Completo <span className="text-red-500">*</span>
             </label>
             <input
+              id={`${fieldId}-name`}
               type="text"
               placeholder="Ej: Roberto Henríquez"
               value={name}
@@ -108,10 +123,11 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-black text-gray-700 uppercase mb-1">
+              <label htmlFor={`${fieldId}-phone`} className="block text-xs font-black text-gray-700 uppercase mb-1">
                 Teléfono de contacto <span className="text-red-500">*</span>
               </label>
               <input
+                id={`${fieldId}-phone`}
                 type="tel"
                 placeholder="7000-0000"
                 value={phone}
@@ -122,10 +138,12 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
             </div>
 
             <div>
-              <label className="block text-xs font-black text-gray-700 uppercase mb-1">
-                Correo Electrónico <span className="text-gray-400 font-normal">(Opcional)</span>
+              <label htmlFor={`${fieldId}-email`} className="block text-xs font-black text-gray-700 uppercase mb-1">
+                Correo Electrónico{" "}
+                <span className="text-gray-400 font-normal">(Opcional)</span>
               </label>
               <input
+                id={`${fieldId}-email`}
                 type="email"
                 placeholder="cliente@ejemplo.com"
                 value={email}
@@ -136,10 +154,11 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
           </div>
 
           <div>
-            <label className="block text-xs font-black text-gray-700 uppercase mb-1">
+            <label htmlFor={`${fieldId}-message`} className="block text-xs font-black text-gray-700 uppercase mb-1">
               Mensaje Personalizable
             </label>
             <textarea
+              id={`${fieldId}-message`}
               rows={3}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -150,8 +169,13 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
 
         {/* Aviso de confirmación */}
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11px] text-blue-900 leading-relaxed">
-          <i className="fa-solid fa-shield-halved mr-1 text-blue-600"></i>
-          <strong>Aviso de privacidad:</strong> Al abrir WhatsApp no se guarda reserva en firme de forma automática. Su información se remitirá exclusivamente al personal de atención de Taller Bautista.
+          <i
+            aria-hidden="true"
+            className="fa-solid fa-shield-halved mr-1 text-blue-600"
+          ></i>
+          <strong>Cómo continuar:</strong> Se abrirá WhatsApp con el mensaje
+          preparado. Revísalo y envíalo allí; la cita quedará pendiente de
+          confirmación del taller.
         </div>
 
         {/* Acciones */}
@@ -161,8 +185,8 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
             onClick={() => handleSend(true)}
             className="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
           >
-            <i className="fa-brands fa-whatsapp text-lg"></i>
-            <span>Enviar con mis datos</span>
+            <i aria-hidden="true" className="fa-brands fa-whatsapp text-lg"></i>
+            <span>Continuar a WhatsApp</span>
           </button>
 
           <button
@@ -170,7 +194,7 @@ export default function WhatsAppModal({ isOpen, onClose, dateStr, slot }) {
             onClick={() => handleSend(false)}
             className="py-3 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs sm:text-sm transition-colors"
           >
-            Consulta genérica (sin datos)
+            Continuar sin completar mis datos
           </button>
         </div>
       </div>

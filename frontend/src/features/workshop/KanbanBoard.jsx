@@ -1,44 +1,55 @@
-import React, { useState } from 'react';
-import KanbanCard from './KanbanCard';
-import { getSlotShift } from '../../utils/timeSlots';
+import React, { useState } from "react";
+import KanbanCard from "./KanbanCard";
+import { getSlotShift } from "../../utils/timeSlots";
 
-export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointment }) {
-  const [filterDate, setFilterDate] = useState('');
-  const [filterShift, setFilterShift] = useState('ALL');
+export default function KanbanBoard({
+  appointments,
+  onMoveKanban,
+  onEditAppointment,
+  filters,
+  setFilters,
+  columnsData,
+  onLoadMore,
+  busy,
+}) {
+  const filterDate = filters.fecha;
+  const setFilterDate = (fecha) => setFilters((f) => ({ ...f, fecha }));
+  const filterShift = filters.turno;
+  const setFilterShift = (turno) => setFilters((f) => ({ ...f, turno }));
 
   const columns = [
     {
       step: 1,
-      title: 'Por Recepcionar',
-      badgeClass: 'bg-amber-100 text-amber-800',
-      icon: 'fa-inbox',
+      title: "Por Recepcionar",
+      badgeClass: "bg-amber-100 text-amber-800",
+      icon: "fa-inbox",
     },
     {
       step: 2,
-      title: 'En Diagnóstico',
-      badgeClass: 'bg-blue-100 text-blue-800',
-      icon: 'fa-stethoscope',
+      title: "En Diagnóstico",
+      badgeClass: "bg-blue-100 text-blue-800",
+      icon: "fa-stethoscope",
     },
     {
       step: 3,
-      title: 'En Reparación',
-      badgeClass: 'bg-purple-100 text-purple-800',
-      icon: 'fa-wrench',
+      title: "En Reparación",
+      badgeClass: "bg-purple-100 text-purple-800",
+      icon: "fa-wrench",
     },
     {
       step: 4,
-      title: 'Completado',
-      badgeClass: 'bg-emerald-100 text-emerald-800',
-      icon: 'fa-circle-check',
+      title: "Completado",
+      badgeClass: "bg-emerald-100 text-emerald-800",
+      icon: "fa-circle-check",
     },
   ];
 
   // Excluir citas canceladas del tablero
   const activeAppointments = appointments.filter((a) => {
-    if (a.status === 'CANCELADO') return false;
+    if (a.status === "CANCELADO") return false;
     const shift = getSlotShift(a.timeSlot);
     const matchesDate = !filterDate || a.date === filterDate;
-    const matchesShift = filterShift === 'ALL' || shift === filterShift;
+    const matchesShift = filterShift === "ALL" || shift === filterShift;
     return matchesDate && matchesShift;
   });
 
@@ -47,7 +58,10 @@ export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointm
       {/* Filtros de Tablero */}
       <div className="bg-white p-4 sm:p-6 rounded-3xl border border-gray-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <i className="fa-solid fa-filter text-gray-400 text-sm"></i>
+          <i
+            aria-hidden="true"
+            className="fa-solid fa-filter text-gray-400 text-sm"
+          ></i>
           <span className="text-xs font-black uppercase tracking-wider text-gray-600">
             Filtros Operativos de Taller
           </span>
@@ -66,7 +80,7 @@ export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointm
             {filterDate && (
               <button
                 type="button"
-                onClick={() => setFilterDate('')}
+                onClick={() => setFilterDate("")}
                 className="text-xs text-red-600 hover:underline font-bold"
               >
                 Todas
@@ -93,7 +107,17 @@ export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointm
       {/* Columnas Kanban */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
         {columns.map((col) => {
-          const itemsInCol = activeAppointments.filter((a) => a.kanbanStep === col.step);
+          const itemsInCol = activeAppointments.filter(
+            (a) => a.kanbanStep === col.step,
+          );
+          const state = {
+            1: "PENDIENTE",
+            2: "EN_DIAGNOSTICO",
+            3: "EN_REPARACION",
+            4: "COMPLETADA",
+          }[col.step];
+          const total =
+            columnsData.find((c) => c.estado === state)?.pagination.total || 0;
 
           return (
             <div
@@ -103,16 +127,28 @@ export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointm
               {/* Encabezado de Columna */}
               <div className="flex items-center justify-between px-1">
                 <div className="flex items-center gap-2 font-black text-xs sm:text-sm text-gray-800 uppercase tracking-wide">
-                  <i className={`fa-solid ${col.icon} text-gray-500`}></i>
+                  <i
+                    aria-hidden="true"
+                    className={`fa-solid ${col.icon} text-gray-500`}
+                  ></i>
                   <span>{col.title}</span>
                 </div>
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-xs font-black ${col.badgeClass}`}
                 >
-                  {itemsInCol.length}
+                  {total}
                 </span>
               </div>
 
+              {itemsInCol.length < total && (
+                <button
+                  disabled={busy}
+                  onClick={() => onLoadMore(state)}
+                  className="text-sm font-bold text-blue-600"
+                >
+                  Cargar más ({itemsInCol.length}/{total})
+                </button>
+              )}
               {/* Lista de Tarjetas */}
               <div className="space-y-4">
                 {itemsInCol.length === 0 ? (
@@ -125,6 +161,7 @@ export default function KanbanBoard({ appointments, onMoveKanban, onEditAppointm
                       key={a.id}
                       appointment={a}
                       step={col.step}
+                      busy={busy}
                       onMove={onMoveKanban}
                       onEdit={onEditAppointment}
                     />

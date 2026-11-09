@@ -1,9 +1,9 @@
-import React from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { ROLES, canAccessView, ROLE_LABELS } from '../../adapters/authAdapter';
-import SecretaryView from '../appointments/SecretaryView';
-import WorkshopView from '../workshop/WorkshopView';
-import AdminView from '../administration/AdminView';
+import React from "react";
+import { useAuth } from "../../context/AuthContext";
+import { ROLES, canAccessView, ROLE_LABELS } from "../../adapters/authAdapter";
+import SecretaryView from "../appointments/SecretaryView";
+import WorkshopView from "../workshop/WorkshopView";
+import AdminView from "../administration/AdminView";
 
 export default function StaffPortal() {
   const { currentUser, activeInternalView, switchInternalView } = useAuth();
@@ -18,15 +18,11 @@ export default function StaffPortal() {
           {/* Identificación del Empleado */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-black text-sm shadow-md">
-              <i className="fa-solid fa-user-shield"></i>
+              <i aria-hidden="true" className="fa-solid fa-user-shield"></i>
             </div>
             <div>
               <div className="text-xs sm:text-sm font-black text-gray-900 leading-tight">
-                {currentUser?.name || 'Personal Autorizado'}
-              </div>
-              <div className="text-[10px] font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                <span>Rol: {ROLE_LABELS[userRole] || userRole}</span>
+                {currentUser?.name || "Personal Autorizado"}
               </div>
             </div>
           </div>
@@ -40,11 +36,14 @@ export default function StaffPortal() {
                 onClick={() => switchInternalView(ROLES.SECRETARIA)}
                 className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
                   activeInternalView === ROLES.SECRETARIA
-                    ? 'bg-bautista-red text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200/70'
+                    ? "bg-bautista-red text-white shadow-md"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/70"
                 }`}
               >
-                <i className="fa-solid fa-clipboard-list"></i>
+                <i
+                  aria-hidden="true"
+                  className="fa-solid fa-clipboard-list"
+                ></i>
                 <span>Secretaría</span>
               </button>
             )}
@@ -56,11 +55,11 @@ export default function StaffPortal() {
                 onClick={() => switchInternalView(ROLES.JEFE)}
                 className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
                   activeInternalView === ROLES.JEFE
-                    ? 'bg-bautista-red text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200/70'
+                    ? "bg-bautista-red text-white shadow-md"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/70"
                 }`}
               >
-                <i className="fa-solid fa-wrench"></i>
+                <i aria-hidden="true" className="fa-solid fa-wrench"></i>
                 <span>Jefe de Taller</span>
               </button>
             )}
@@ -72,11 +71,11 @@ export default function StaffPortal() {
                 onClick={() => switchInternalView(ROLES.ADMIN)}
                 className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 flex items-center gap-2 whitespace-nowrap ${
                   activeInternalView === ROLES.ADMIN
-                    ? 'bg-bautista-red text-white shadow-md'
-                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-200/70'
+                    ? "bg-bautista-red text-white shadow-md"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/70"
                 }`}
               >
-                <i className="fa-solid fa-gear"></i>
+                <i aria-hidden="true" className="fa-solid fa-gear"></i>
                 <span>Administración</span>
               </button>
             )}

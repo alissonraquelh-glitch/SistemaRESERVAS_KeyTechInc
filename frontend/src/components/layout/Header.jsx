@@ -1,29 +1,24 @@
-import React from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { ROLES } from '../../adapters/authAdapter';
-import logoImg from '../../assets/logo.png';
+import { useAuth } from "../../context/AuthContext";
+import logoImg from "../../assets/logo.png";
 
 export default function Header({ currentView, setCurrentView }) {
   const {
-    currentUser,
     isAuthenticated,
-    activeInternalView,
-    switchInternalView,
     setIsLoginModalOpen,
     logout,
   } = useAuth();
 
-  const isClientView = currentView === 'client';
+  const isClientView = currentView === "client";
 
   const handleClientViewClick = () => {
-    setCurrentView('client');
+    setCurrentView("client");
   };
 
   const handleEmployeeViewClick = () => {
     if (!isAuthenticated) {
       setIsLoginModalOpen(true);
     } else {
-      setCurrentView('employee');
+      setCurrentView("employee");
     }
   };
 
@@ -43,7 +38,7 @@ export default function Header({ currentView, setCurrentView }) {
                 className="w-full h-full object-contain"
                 onError={(e) => {
                   e.target.onerror = null;
-                  e.target.src = '/logo.png';
+                  e.target.src = "/logo.png";
                 }}
               />
             </div>
@@ -57,37 +52,6 @@ export default function Header({ currentView, setCurrentView }) {
             </div>
           </div>
 
-          {/* Navegación de Modos: Portal Clientes vs Portal Personal */}
-          <div className="flex items-center gap-3">
-            <div className="flex items-center bg-black/50 p-1.5 rounded-2xl border border-white/10 shadow-inner">
-              <button
-                type="button"
-                onClick={handleClientViewClick}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
-                  isClientView
-                    ? 'bg-bautista-red text-white shadow-md'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                <i className="fa-solid fa-calendar-check"></i>
-                <span>Reservar Ahora</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleEmployeeViewClick}
-                className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 flex items-center gap-2 ${
-                  !isClientView
-                    ? 'bg-bautista-red text-white shadow-md'
-                    : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                <i className="fa-solid fa-id-badge"></i>
-                <span className="hidden sm:inline">Portal Personal</span>
-                <span className="sm:hidden">Personal</span>
-              </button>
-            </div>
-
             {/* Si está autenticado y en modo empleado, botón de logout */}
             {isAuthenticated && !isClientView && (
               <button
@@ -96,12 +60,14 @@ export default function Header({ currentView, setCurrentView }) {
                 title="Cerrar sesión"
                 className="w-10 h-10 rounded-xl bg-white/10 hover:bg-red-600/80 text-gray-300 hover:text-white flex items-center justify-center transition-colors text-sm"
               >
-                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                <i
+                  aria-hidden="true"
+                  className="fa-solid fa-arrow-right-from-bracket"
+                ></i>
               </button>
             )}
           </div>
         </div>
-      </div>
     </header>
   );
 }

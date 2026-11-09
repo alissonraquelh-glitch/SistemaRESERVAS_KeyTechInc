@@ -1,24 +1,61 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useId } from "react";
 
-export default function Modal({ isOpen, onClose, title, subtitle, children, maxWidth = 'max-w-lg' }) {
+export default function Modal({
+  isOpen,
+  onClose,
+  title,
+  subtitle,
+  children,
+  maxWidth = "max-w-lg",
+}) {
   const modalRef = useRef(null);
+  const titleId = useId();
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
 
   // Cerrar con tecla Escape y bloquear scroll del body
   useEffect(() => {
     if (!isOpen) return;
 
+    const previousFocus = document.activeElement;
+    const frame = requestAnimationFrame(() =>
+      (
+        modalRef.current?.querySelector("input, select, textarea") ||
+        modalRef.current?.querySelector("button")
+      )?.focus(),
+    );
+
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === "Escape") closeRef.current();
+      if (e.key === "Tab") {
+        const controls = [
+          ...modalRef.current.querySelectorAll(
+            "button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href]",
+          ),
+        ];
+        const first = controls[0],
+          last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last?.focus();
+        }
+        if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first?.focus();
+        }
+      }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+      cancelAnimationFrame(frame);
+      if (previousFocus?.isConnected) previousFocus.focus();
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -26,7 +63,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="modal-title"
+      aria-labelledby={titleId}
       className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -42,15 +79,22 @@ export default function Modal({ isOpen, onClose, title, subtitle, children, maxW
           aria-label="Cerrar modal"
           className="absolute top-6 right-6 w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center transition-colors"
         >
-          <i className="fa-solid fa-xmark text-lg"></i>
+          <i aria-hidden="true" className="fa-solid fa-xmark text-lg"></i>
         </button>
 
         {title && (
           <div className="mb-6 pr-8">
-            <h3 id="modal-title" className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+            <h3
+              id={titleId}
+              className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight"
+            >
               {title}
             </h3>
-            {subtitle && <p className="text-xs sm:text-sm text-gray-500 mt-1">{subtitle}</p>}
+            {subtitle && (
+              <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
 

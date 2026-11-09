@@ -1,39 +1,35 @@
-import React from 'react';
+import React from "react";
 
-export default function KpiCards({ appointments }) {
-  const total = appointments.length;
-  const pendientes = appointments.filter((a) => a.status === 'PENDIENTE').length;
-  const enTaller = appointments.filter((a) => a.status === 'EN_TALLER').length;
-  const completadas = appointments.filter((a) => a.status === 'COMPLETADO').length;
-
+export default function KpiCards({ summary }) {
+  const { total, pendientes, en_taller: enTaller, completadas } = summary;
   const kpis = [
     {
-      label: 'Total de Citas',
+      label: "Total de Citas",
       count: total,
-      icon: 'fa-calendar-days',
-      color: 'text-gray-900',
-      bgColor: 'bg-gray-100',
+      icon: "fa-calendar-days",
+      color: "text-gray-900",
+      bgColor: "bg-gray-100",
     },
     {
-      label: 'Pendientes',
+      label: "Pendientes",
       count: pendientes,
-      icon: 'fa-clock',
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50',
+      icon: "fa-clock",
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
     },
     {
-      label: 'En Taller',
+      label: "En Taller",
       count: enTaller,
-      icon: 'fa-screwdriver-wrench',
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-50',
+      icon: "fa-screwdriver-wrench",
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
     },
     {
-      label: 'Completadas',
+      label: "Completadas",
       count: completadas,
-      icon: 'fa-circle-check',
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      icon: "fa-circle-check",
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
     },
   ];
 
@@ -55,7 +51,7 @@ export default function KpiCards({ appointments }) {
           <div
             className={`w-12 h-12 rounded-2xl ${k.bgColor} ${k.color} flex items-center justify-center text-xl shrink-0`}
           >
-            <i className={`fa-solid ${k.icon}`}></i>
+            <i aria-hidden="true" className={`fa-solid ${k.icon}`}></i>
           </div>
         </div>
       ))}

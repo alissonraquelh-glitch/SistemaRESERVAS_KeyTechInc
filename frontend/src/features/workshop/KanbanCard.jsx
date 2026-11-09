@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-export default function KanbanCard({ appointment, step, onMove, onEdit }) {
+export default function KanbanCard({
+  appointment,
+  step,
+  onMove,
+  onEdit,
+  busy,
+}) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   return (
@@ -11,17 +17,6 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
           {appointment.placa}
         </span>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => onEdit(appointment)}
-            title="Editar Cita"
-            className="text-gray-300 hover:text-blue-500 transition-colors"
-          >
-            <i className="fa-solid fa-pen text-xs"></i>
-          </button>
-          <span className="font-mono text-[10px] font-black text-gray-400 group-hover:text-red-500 transition-colors">
-            {appointment.id}
-          </span>
         </div>
       </div>
 
@@ -38,10 +33,15 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
       {/* Fecha y Horario */}
       <div className="bg-gray-50 p-2.5 rounded-xl text-[10px] text-gray-600 font-medium flex justify-between items-center border border-gray-100">
         <span className="truncate pr-2 font-bold">
-          <i className="fa-regular fa-clock mr-1 text-gray-400"></i>
+          <i
+            aria-hidden="true"
+            className="fa-regular fa-clock mr-1 text-gray-400"
+          ></i>
           {appointment.timeSlot}
         </span>
-        <span className="font-bold text-gray-400 shrink-0">{appointment.date}</span>
+        <span className="font-bold text-gray-400 shrink-0">
+          {appointment.date}
+        </span>
       </div>
 
       {/* Detalle Desplegable */}
@@ -49,16 +49,18 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
         <div className="mt-2 p-3 bg-blue-50/50 rounded-xl border border-blue-100 text-[11px] text-gray-700 space-y-1.5 fade-in">
           <p>
             <span className="font-bold text-blue-800">
-              <i className="fa-solid fa-user mr-1"></i> Cliente:
-            </span>{' '}
+              <i aria-hidden="true" className="fa-solid fa-user mr-1"></i>{" "}
+              Cliente:
+            </span>{" "}
             {appointment.clientName}
           </p>
           <p>
             <span className="font-bold text-blue-800">
-              <i className="fa-solid fa-phone mr-1"></i> Teléfono:
-            </span>{' '}
+              <i aria-hidden="true" className="fa-solid fa-phone mr-1"></i>{" "}
+              Teléfono:
+            </span>{" "}
             <a
-              href={`tel:${appointment.phone.replace(/\s/g, '')}`}
+              href={`tel:${appointment.phone.replace(/\s/g, "")}`}
               className="text-blue-600 underline font-mono"
             >
               {appointment.phone}
@@ -66,21 +68,24 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
           </p>
           <p>
             <span className="font-bold text-blue-800">
-              <i className="fa-solid fa-id-card mr-1"></i> DUI/NIT:
-            </span>{' '}
-            {appointment.dui || 'N/A'}
+              <i aria-hidden="true" className="fa-solid fa-id-card mr-1"></i>{" "}
+              DUI/NIT:
+            </span>{" "}
+            {appointment.dui || "N/A"}
           </p>
           <p>
             <span className="font-bold text-blue-800">
-              <i className="fa-solid fa-wrench mr-1"></i> Servicio:
-            </span>{' '}
+              <i aria-hidden="true" className="fa-solid fa-wrench mr-1"></i>{" "}
+              Servicio:
+            </span>{" "}
             {appointment.service}
           </p>
           <p>
             <span className="font-bold text-blue-800">
-              <i className="fa-solid fa-comment mr-1"></i> Comentarios:
-            </span>{' '}
-            {appointment.comments || 'Sin comentarios'}
+              <i aria-hidden="true" className="fa-solid fa-comment mr-1"></i>{" "}
+              Comentarios:
+            </span>{" "}
+            {appointment.comments || "Sin comentarios"}
           </p>
         </div>
       )}
@@ -88,11 +93,19 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
       {/* Botón Toggle de Detalles */}
       <button
         type="button"
+        disabled={busy}
         onClick={() => setIsDetailsOpen((prev) => !prev)}
         className="w-full mt-2 py-1.5 text-[10px] font-bold text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center justify-center gap-1.5"
       >
-        <i className={`fa-solid ${isDetailsOpen ? 'fa-chevron-up' : 'fa-chevron-down'}`}></i>
-        <span>{isDetailsOpen ? 'Ocultar información' : 'Info de contacto y vehículo'}</span>
+        <i
+          aria-hidden="true"
+          className={`fa-solid ${isDetailsOpen ? "fa-chevron-up" : "fa-chevron-down"}`}
+        ></i>
+        <span>
+          {isDetailsOpen
+            ? "Ocultar información"
+            : "Info de contacto y vehículo"}
+        </span>
       </button>
 
       {/* Botones de Transición Kanban */}
@@ -100,10 +113,11 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
         {step > 1 ? (
           <button
             type="button"
+            disabled={busy}
             onClick={() => onMove(appointment.id, step - 1)}
             className="text-[10px] font-bold text-gray-400 hover:text-blue-500 transition-colors bg-gray-50 px-2 py-1.5 rounded-lg flex items-center gap-1"
           >
-            <i className="fa-solid fa-arrow-left"></i>
+            <i aria-hidden="true" className="fa-solid fa-arrow-left"></i>
             <span>Ant.</span>
           </button>
         ) : (
@@ -114,10 +128,11 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
         {step < 4 ? (
           <button
             type="button"
+            disabled={busy}
             onClick={() => onMove(appointment.id, 4)}
             className="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-2 py-1.5 rounded-lg transition-all flex items-center gap-1"
           >
-            <i className="fa-solid fa-check-double"></i>
+            <i aria-hidden="true" className="fa-solid fa-check-double"></i>
             <span>Finalizar</span>
           </button>
         ) : (
@@ -127,15 +142,16 @@ export default function KanbanCard({ appointment, step, onMove, onEdit }) {
         {step < 4 ? (
           <button
             type="button"
+            disabled={busy}
             onClick={() => onMove(appointment.id, step + 1)}
             className="text-[10px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-2 py-1.5 rounded-lg transition-all flex items-center gap-1"
           >
             <span>Sig.</span>
-            <i className="fa-solid fa-arrow-right"></i>
+            <i aria-hidden="true" className="fa-solid fa-arrow-right"></i>
           </button>
         ) : (
           <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
-            <i className="fa-solid fa-check"></i> Completado
+            <i aria-hidden="true" className="fa-solid fa-check"></i> Completado
           </span>
         )}
       </div>

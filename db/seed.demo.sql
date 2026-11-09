@@ -38,52 +38,31 @@ ON DUPLICATE KEY UPDATE
     color = VALUES(color);
 
 INSERT INTO configuracion_agenda
-    (dia_semana, hora_apertura, hora_cierre, duracion_bloque_min, activo)
+    (dia_semana, hora_apertura, hora_cierre, duracion_bloque_min, capacidad_maxima, activo)
 VALUES
-    (0, '00:00:00', '00:01:00', 30, FALSE),
-    (1, '08:00:00', '17:00:00', 30, TRUE),
-    (2, '08:00:00', '17:00:00', 30, TRUE),
-    (3, '08:00:00', '17:00:00', 30, TRUE),
-    (4, '08:00:00', '17:00:00', 30, TRUE),
-    (5, '08:00:00', '17:00:00', 30, TRUE),
-    (6, '09:00:00', '13:00:00', 30, TRUE)
+    (0, '00:00:00', '00:01:00', 120, 3, FALSE),
+    (1, '08:00:00', '17:00:00', 120, 3, TRUE),
+    (2, '08:00:00', '17:00:00', 120, 3, TRUE),
+    (3, '08:00:00', '17:00:00', 120, 3, TRUE),
+    (4, '08:00:00', '17:00:00', 120, 3, TRUE),
+    (5, '08:00:00', '17:00:00', 120, 3, TRUE),
+    (6, '09:00:00', '13:00:00', 120, 3, TRUE)
 ON DUPLICATE KEY UPDATE
     hora_apertura = VALUES(hora_apertura),
     hora_cierre = VALUES(hora_cierre),
     duracion_bloque_min = VALUES(duracion_bloque_min),
+    capacidad_maxima = VALUES(capacidad_maxima),
     activo = VALUES(activo);
 
-INSERT INTO cita
-    (id_cita, placa, inicio, fin, estado, origen, creada_por, notas)
+-- El siguiente lunes mantiene intervalos futuros dentro de una jornada activa.
+SET @demo_fecha = DATE_ADD(CURRENT_DATE, INTERVAL (7 - WEEKDAY(CURRENT_DATE)) DAY);
+-- Fixtures deliberados para desarrollo, no utilizar como camino de registro de la API.
+INSERT INTO cita (id_cita,placa,inicio,fin,estado,origen,creada_por,servicio_codigo,notas)
 VALUES
-    (
-        '00000000-0000-4000-8000-000000000201',
-        'DEMO001',
-        TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY), '09:00:00'),
-        TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 1 DAY), '10:00:00'),
-        'PENDIENTE', 'WEB', NULL, 'Revision general de demostracion'
-    ),
-    (
-        '00000000-0000-4000-8000-000000000202',
-        'DEMO002',
-        TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 2 DAY), '11:00:00'),
-        TIMESTAMP(DATE_ADD(CURRENT_DATE, INTERVAL 2 DAY), '12:30:00'),
-        'PENDIENTE', 'WEB', NULL, 'Inspeccion de vehiculo pesado'
-    ),
-    (
-        '00000000-0000-4000-8000-000000000203',
-        'DEMO003',
-        TIMESTAMP(DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY), '14:00:00'),
-        TIMESTAMP(DATE_SUB(CURRENT_DATE, INTERVAL 1 DAY), '15:00:00'),
-        'COMPLETADA', 'WEB', NULL, 'Servicio de demostracion completado'
-    )
-ON DUPLICATE KEY UPDATE
-    placa = VALUES(placa),
-    inicio = VALUES(inicio),
-    fin = VALUES(fin),
-    estado = VALUES(estado),
-    origen = VALUES(origen),
-    creada_por = VALUES(creada_por),
-    notas = VALUES(notas);
-
+('00000000-0000-4000-8000-000000000201','DEMO001',TIMESTAMP(@demo_fecha,'08:00:00'),TIMESTAMP(@demo_fecha,'10:00:00'),'PENDIENTE','WEB',NULL,'MECANICA_GENERAL','Cita pendiente de demostración'),
+('00000000-0000-4000-8000-000000000202','DEMO002',TIMESTAMP(@demo_fecha,'08:00:00'),TIMESTAMP(@demo_fecha,'10:00:00'),'EN_DIAGNOSTICO','WEB',NULL,'DIAGNOSTICO_ESCANER','Diagnóstico de demostración'),
+('00000000-0000-4000-8000-000000000203','DEMO003',TIMESTAMP(@demo_fecha,'08:00:00'),TIMESTAMP(@demo_fecha,'10:00:00'),'EN_REPARACION','WEB',NULL,'FRENOS_SUSPENSION','Reparación de demostración'),
+('00000000-0000-4000-8000-000000000204','DEMO001',TIMESTAMP(@demo_fecha,'10:00:00'),TIMESTAMP(@demo_fecha,'12:00:00'),'COMPLETADA','WEB',NULL,'MANTENIMIENTO_PREVENTIVO','Completada: no ocupa cupo'),
+('00000000-0000-4000-8000-000000000205','DEMO003',TIMESTAMP(@demo_fecha,'10:00:00'),TIMESTAMP(@demo_fecha,'12:00:00'),'CANCELADA','WEB',NULL,'ALINEACION_BALANCEO','Cancelada: no ocupa cupo')
+ON DUPLICATE KEY UPDATE inicio=VALUES(inicio),fin=VALUES(fin),estado=VALUES(estado),servicio_codigo=VALUES(servicio_codigo),notas=VALUES(notas);
 COMMIT;
