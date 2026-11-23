@@ -628,39 +628,7 @@
                   "properties": {
                     "data": {
                       "type": "array",
-                      "items": {
-                        "type": "object",
-                        "description": "Campos de Dia más id_configuracion",
-                        "properties": {
-                          "dia_semana": {
-                            "type": "integer",
-                            "minimum": 0,
-                            "maximum": 6
-                          },
-                          "hora_apertura": {
-                            "type": "string"
-                          },
-                          "hora_cierre": {
-                            "type": "string"
-                          },
-                          "duracion_bloque_min": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": 1440
-                          },
-                          "capacidad_maxima": {
-                            "type": "integer",
-                            "minimum": 1,
-                            "maximum": 15
-                          },
-                          "activo": {
-                            "type": "boolean"
-                          },
-                          "id_configuracion": {
-                            "type": "integer"
-                          }
-                        }
-                      }
+                      "items": { "$ref": "#/components/schemas/DiaPublico" }
                     }
                   },
                   "required": ["data"],
@@ -767,7 +735,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Disponibilidad"
+                      "$ref": "#/components/schemas/DisponibilidadPublica"
                     }
                   },
                   "required": ["data"],
@@ -4571,6 +4539,112 @@
           "ocupados",
           "disponibles",
           "estado"
+        ],
+        "additionalProperties": false
+      },
+      "DiaPublico": {
+        "type": "object",
+        "properties": {
+          "dia_semana": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 6
+          },
+          "hora_apertura": {
+            "type": "string"
+          },
+          "hora_cierre": {
+            "type": "string"
+          },
+          "duracion_bloque_min": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1440
+          },
+          "activo": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "dia_semana",
+          "hora_apertura",
+          "hora_cierre",
+          "duracion_bloque_min",
+          "activo"
+        ],
+        "additionalProperties": false
+      },
+      "IntervaloPublico": {
+        "type": "object",
+        "properties": {
+          "inicio": {
+            "type": "string"
+          },
+          "fin": {
+            "type": "string"
+          },
+          "intervalo": {
+            "type": "string"
+          },
+          "turno": {
+            "enum": [
+              "MANANA",
+              "TARDE"
+            ]
+          },
+          "estado": {
+            "enum": [
+              "DISPONIBLE",
+              "AGOTADO"
+            ]
+          },
+          "motivo_cierre": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "inicio",
+          "fin",
+          "intervalo",
+          "turno",
+          "estado",
+          "motivo_cierre"
+        ],
+        "additionalProperties": false
+      },
+      "DisponibilidadPublica": {
+        "type": "object",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date"
+          },
+          "zona_horaria": {
+            "type": "string"
+          },
+          "cerrado": {
+            "type": "boolean"
+          },
+          "motivo_cierre": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "intervalos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntervaloPublico"
+            }
+          }
+        },
+        "required": [
+          "fecha",
+          "cerrado",
+          "intervalos"
         ],
         "additionalProperties": false
       },

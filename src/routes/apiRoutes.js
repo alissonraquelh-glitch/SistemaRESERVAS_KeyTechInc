@@ -26,7 +26,7 @@ router.post("/auth/login", login);
 router.get("/servicios", (req, res) => res.json({ data: services }));
 router.get(
   "/public/agenda",
-  data(() => reads.configurations()),
+  data(() => reads.publicConfigurations()),
 );
 router.get(
   "/public/disponibilidad",

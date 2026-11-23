@@ -1,5 +1,6 @@
 const path = require("node:path");
 const express = require("express");
+const securityHeaders = require("./middleware/securityHeaders");
 const pool = require("./config/database");
 const { session, originCheck } = require("./middleware/session");
 const { AppError, errorHandler } = require("./lib/errors");
@@ -9,6 +10,7 @@ const app = express();
 app.disable("x-powered-by");
 
 if (process.env.TRUST_PROXY === "1") app.set("trust proxy", 1);
+app.use(...securityHeaders());
 app.use(express.json({ limit: "64kb" }));
 
 async function health(req, res) {

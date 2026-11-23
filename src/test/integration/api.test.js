@@ -176,7 +176,15 @@ describe("API V6 con MySQL real", { skip: !database }, () => {
       .get("/api/public/disponibilidad")
       .query({ fecha: date })
       .expect(200);
-    assert.equal(availability.body.data.intervalos[0].disponibles, 0);
+    assert.equal(availability.body.data.intervalos[0].estado, "AGOTADO");
+    for (const slot of availability.body.data.intervalos) {
+      assert.equal(slot.capacidad_maxima, undefined);
+      assert.equal(slot.ocupados, undefined);
+      assert.equal(slot.disponibles, undefined);
+    }
+    const internal = await admin.get("/api/agenda/disponibilidad").query({ fecha: date }).expect(200);
+    assert.equal(internal.body.data.intervalos[0].disponibles, 0);
+    assert.equal(internal.body.data.intervalos[0].capacidad_maxima, 3);
     assert.doesNotMatch(
       JSON.stringify(availability.body),
       /nombre_completo|documento_identidad|telefono|TEST-1/,

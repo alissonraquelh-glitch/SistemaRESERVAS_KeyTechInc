@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const pool = require("../config/database");
 const { AppError } = require("../lib/errors");
 const { object, string, invalid } = require("../lib/validation");
+const { configuredOrigins } = require("../lib/origins");
 const ROLES = ["SECRETARIA", "JEFE_TALLER", "ADMIN", "DUENO"];
 const MANAGERS = ["SECRETARIA", "ADMIN", "DUENO"];
 const production = process.env.NODE_ENV === "production";
@@ -22,14 +23,11 @@ const session = cookieSession({
   maxAge: 8 * 60 * 60 * 1000,
   path: "/api",
 });
-const permittedOrigins = () =>
-  (process.env.APP_ORIGINS || "http://localhost:5173,http://localhost:3000")
-    .split(",")
-    .map((s) => s.trim());
+const permittedOrigins = configuredOrigins();
 function originCheck(req, res, next) {
   if (!["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) return next();
   const origin = req.get("origin");
-  if (!origin || !permittedOrigins().includes(origin))
+  if (!origin || !permittedOrigins.includes(origin))
     throw new AppError(
       403,
       "INVALID_ORIGIN",

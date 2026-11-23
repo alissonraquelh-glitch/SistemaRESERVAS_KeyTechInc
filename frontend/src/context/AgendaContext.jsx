@@ -129,7 +129,6 @@ export function AgendaProvider({ children }) {
           ? "No disponible"
           : "Consultando…",
     closeHour: day?.activo ? day.hora_cierre.slice(0, 5) : "",
-    maxCapacity: day?.capacidad_maxima,
   };
   return (
     <AgendaContext.Provider

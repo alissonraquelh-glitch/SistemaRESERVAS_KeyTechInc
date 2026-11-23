@@ -88,8 +88,7 @@ export default function PublicCalendar({ onOpenWhatsAppModal }) {
                 {data.intervalos
                   .filter((s) => s.turno === turno)
                   .map((s) => {
-                    const full = !s.disponibles,
-                      almost = s.estado === "CASI_LLENO";
+                    const full = s.estado !== "DISPONIBLE";
                     return (
                       <div
                         key={s.inicio}
@@ -110,18 +109,14 @@ export default function PublicCalendar({ onOpenWhatsAppModal }) {
                               "text-xs font-bold rounded-lg p-2 " +
                               (full
                                 ? "bg-gray-200"
-                                : almost
-                                  ? "bg-amber-100 text-amber-800"
-                                  : "bg-emerald-100 text-emerald-800")
+                                : "bg-emerald-100 text-emerald-800")
                             }
                           >
-                            {s.estado === "BLOQUEADO"
-                              ? s.motivo_cierre || "Cerrado"
+                            {s.motivo_cierre
+                              ? s.motivo_cierre
                               : full
                                 ? "Sin cupos"
-                                : almost
-                                  ? "Casi lleno"
-                                  : "Disponible"}
+                                : "Disponible"}
                           </span>
                         </div>
                         <button

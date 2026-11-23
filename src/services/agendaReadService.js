@@ -120,6 +120,17 @@ async function configurations(connection = pool) {
   );
   return rows.map((r) => ({ ...r, activo: Boolean(r.activo) }));
 }
+async function publicConfigurations(connection = pool) {
+  return (await configurations(connection)).map(
+    ({ dia_semana, hora_apertura, hora_cierre, duracion_bloque_min, activo }) => ({
+      dia_semana,
+      hora_apertura,
+      hora_cierre,
+      duracion_bloque_min,
+      activo,
+    }),
+  );
+}
 async function availability(query, internal = false, connection = pool) {
   const fecha = civilDate(query.fecha);
   if (fecha < (internal ? today() : nextDay(today())))
@@ -181,7 +192,18 @@ async function availability(query, internal = false, connection = pool) {
     motivo_cierre:
       fullClosure?.motivo ||
       (cerrado ? "Taller cerrado o sin configuración." : null),
-    intervalos,
+    intervalos: internal
+      ? intervalos
+      : intervalos.map(
+          ({ inicio, fin, intervalo, turno, disponibles, motivo_cierre }) => ({
+            inicio,
+            fin,
+            intervalo,
+            turno,
+            estado: disponibles > 0 ? "DISPONIBLE" : "AGOTADO",
+            motivo_cierre,
+          }),
+        ),
   };
 }
 module.exports = {
@@ -190,6 +212,7 @@ module.exports = {
   summary,
   board,
   configurations,
+  publicConfigurations,
   availability,
   filters,
   ACTIVE_STATES,
