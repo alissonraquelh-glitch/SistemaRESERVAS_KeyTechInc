@@ -9,7 +9,7 @@ Entorno: rama `feature/mejoras-feedback-cliente`, MySQL 8 local desechable en Do
 | Unitarias backend (`npm --prefix src test`) | 6/6 aprobadas |
 | Integración backend con MySQL desechable (`bookit_v6_feedback_test`) | 17/17 aprobadas |
 | Build frontend (`npm --prefix frontend run build`) | Aprobado |
-| E2E Playwright (`test:e2e`) | **No ejecutada**: `frontend/test/e2e.mjs` no existe en el repositorio |
+| E2E Playwright (`test:e2e`) | **Aprobada** tras restaurarse `frontend/test/e2e.mjs` (PR #12): humo a 1440 px y 390 px con `E2E_BROWSER_CHANNEL=chromium` |
 
 ## Funcionales en navegador
 

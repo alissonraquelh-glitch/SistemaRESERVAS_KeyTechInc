@@ -1,0 +1,73 @@
+erDiagram
+usuario ||--o| cliente : "es (tipo=CLIENTE)"
+usuario ||--o| empleado : "es (tipo=EMPLEADO)"
+cliente ||--o{ vehiculo : posee
+vehiculo ||--o{ cita : "se agenda en"
+empleado |o--o{ cita : "registra (TELEFONO)"
+empleado ||--o{ bloqueo_agenda : crea
+empleado ||--o{ log_auditoria : genera
+usuario {
+  varchar36 id_usuario PK
+  enum tipo
+  varchar150 nombre_completo
+  varchar20 telefono
+  varchar254 correo UK
+  boolean activo
+}
+cliente {
+  varchar36 id_usuario PK,FK
+  varchar20 documento_identidad UK
+  datetime fecha_registro
+}
+empleado {
+  varchar36 id_usuario PK,FK
+  varchar255 contrasena_hash
+  enum rol
+}
+vehiculo {
+  varchar12 placa PK
+  varchar36 id_cliente FK
+  varchar50 marca
+  varchar50 modelo
+  enum tipo
+  smallint anio
+  varchar30 color
+}
+cita {
+  varchar36 id_cita PK
+  varchar12 placa FK
+  datetime inicio
+  datetime fin
+  enum estado
+  enum origen
+  varchar36 creada_por FK
+  varchar50 servicio_codigo
+  varchar200 servicio_detalle
+  text notas
+}
+configuracion_agenda {
+  smallint id_configuracion PK
+  smallint dia_semana UK
+  time hora_apertura
+  time hora_cierre
+  smallint duracion_bloque_min
+  smallint capacidad_maxima
+  boolean activo
+}
+bloqueo_agenda {
+  varchar36 id_bloqueo PK
+  datetime inicio
+  datetime fin
+  enum tipo
+  varchar200 motivo
+  varchar36 creado_por FK
+}
+log_auditoria {
+  bigint id_log PK
+  datetime ocurrio_en
+  varchar36 id_empleado FK
+  varchar50 accion
+  varchar50 entidad
+  varchar64 id_entidad
+  json detalle
+}

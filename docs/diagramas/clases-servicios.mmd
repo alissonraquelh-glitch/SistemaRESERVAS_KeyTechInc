@@ -1,0 +1,74 @@
+classDiagram
+direction LR
+class agendamientoService {
+  <<service>>
+  +manual(body, user)
+  +existing(body, user)
+  +update(id, body, user)
+  +changeStatus(id, body, user)
+  +mutate(id, user, action)
+}
+class agendaReadService {
+  <<service>>
+  +list(query)
+  +detail(id)
+  +summary(query)
+  +board(query)
+  +availability(query, internal)
+}
+class adminService {
+  <<service>>
+  +updateConfig(body, user)
+  +createClosure(body, user)
+  +removeClosure(id, user)
+  +logs(query)
+  +exportLogs(query, user)
+}
+class auditoriaService {
+  <<service>>
+  +audit(connection, user, accion, entidad, id, detalle)
+}
+class apiRoutes {
+  <<router /api>>
+}
+class session {
+  <<middleware>>
+  +login(req, res)
+  +requireAuth()
+  +requireCsrf()
+  +originCheck()
+}
+apiRoutes --> session
+apiRoutes --> agendamientoService
+apiRoutes --> agendaReadService
+apiRoutes --> adminService
+agendamientoService --> Cliente
+agendamientoService --> Vehiculo
+agendamientoService --> Cita
+agendamientoService --> auditoriaService
+adminService --> ConfiguracionAgenda
+adminService --> BloqueoAgenda
+adminService --> auditoriaService
+auditoriaService --> LogAuditoria
+session --> Empleado
+class Cliente {
+  <<model>>
+}
+class Vehiculo {
+  <<model>>
+}
+class Cita {
+  <<model>>
+}
+class ConfiguracionAgenda {
+  <<model>>
+}
+class BloqueoAgenda {
+  <<model>>
+}
+class LogAuditoria {
+  <<model>>
+}
+class Empleado {
+  <<model>>
+}

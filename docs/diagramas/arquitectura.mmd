@@ -1,0 +1,14 @@
+flowchart LR
+  subgraph Navegador
+    A[Portal público<br/>React] --- B[Portal del personal<br/>React /personal]
+  end
+  subgraph "Contenedor Docker (Railway)"
+    C[Express 5<br/>Helmet, sesión, CSRF, Origin] --> D[Rutas /api<br/>apiRoutes.js]
+    D --> E[Servicios<br/>reglas de negocio y transacciones]
+    E --> F[Modelos DAO<br/>BaseModel y subclases]
+    C -. sirve .-> G[frontend/dist<br/>build de Vite]
+  end
+  F --> H[(MySQL 8<br/>tablas, triggers,<br/>procedimientos)]
+  A -- fetch /api --> C
+  B -- fetch /api + cookie + X-CSRF-Token --> C
+  A -. enlace .-> W[WhatsApp del taller]
