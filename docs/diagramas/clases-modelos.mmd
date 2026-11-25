@@ -1,0 +1,66 @@
+classDiagram
+direction TB
+class BaseModel {
+  <<abstract>>
+  +static table
+  +static primaryKey
+  +validateFields(data, allowedFields)
+  +findAll(limit, offset, connection)
+  +findById(id, connection)
+  +create(data, connection)
+  +update(id, data, connection)
+  +delete(id, connection)
+}
+class Usuario {
+  table = usuario
+  id_usuario, tipo, nombre_completo
+  telefono, correo, activo
+  +create() bloqueado
+}
+class Cliente {
+  table = cliente
+  documento_identidad, fecha_registro
+  +create(data, conn) usuario+cliente
+  +update(id, data, conn)
+}
+class Empleado {
+  table = empleado
+  contrasena_hash, rol
+  +create(data, conn) usuario+empleado
+  +update(id, data, conn)
+}
+class Vehiculo {
+  table = vehiculo
+  placa PK, id_cliente, marca, modelo
+  tipo, anio, color
+}
+class Cita {
+  table = cita
+  id_cita, placa, inicio, fin, estado
+  origen, servicio_codigo, servicio_detalle
+  +create(data, conn) sp_registrar_cita_tx
+  +delete() prohibido
+}
+class ConfiguracionAgenda {
+  table = configuracion_agenda
+  dia_semana, hora_apertura, hora_cierre
+  duracion_bloque_min, capacidad_maxima
+}
+class BloqueoAgenda {
+  table = bloqueo_agenda
+  inicio, fin, tipo, motivo, creado_por
+}
+class LogAuditoria {
+  table = log_auditoria
+  accion, entidad, id_entidad, detalle
+  +update() prohibido
+  +delete() prohibido
+}
+BaseModel <|-- Usuario
+BaseModel <|-- Cliente
+BaseModel <|-- Empleado
+BaseModel <|-- Vehiculo
+BaseModel <|-- Cita
+BaseModel <|-- ConfiguracionAgenda
+BaseModel <|-- BloqueoAgenda
+BaseModel <|-- LogAuditoria
