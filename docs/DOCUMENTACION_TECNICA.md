@@ -194,11 +194,11 @@ El frontend tiene `frontend/.env.example` (`VITE_API_BASE_URL=/api`, `VITE_API_B
 **5. Crear el primer empleado** (si no cargó los datos demo). El script lee JSON por la entrada estándar y nunca recibe la contraseña como argumento:
 
 ```bash
-# Crear el archivo con un editor (no con echo) para que la contraseña no quede en el historial de la terminal
-umask 077 && nano empleado.json
+# Archivo temporal fuera del repositorio (no puede terminar en un commit),
+# editado con un editor para que la contraseña no quede en el historial de la terminal.
+f=$(mktemp) && nano "$f"
 # {"nombre_completo":"Ana Admin","telefono":"70000000","correo":"admin@taller.com","rol":"ADMIN","password":"<min 8 caracteres>"}
-npm run provision:employee --prefix src < empleado.json
-shred -u empleado.json   # o rm empleado.json
+npm run provision:employee --prefix src < "$f"; shred -u "$f"
 ```
 
 Roles válidos: `SECRETARIA`, `JEFE_TALLER`, `ADMIN`, `DUENO`.
