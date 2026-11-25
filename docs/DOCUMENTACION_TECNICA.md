@@ -164,7 +164,7 @@ npm ci --prefix src
 npm ci --prefix frontend
 
 # 3. Base de datos (ejemplo con Docker; omitir si ya tiene MySQL)
-docker run -d --name bookit-mysql -e MYSQL_ROOT_PASSWORD=cambiar -p 3306:3306 mysql:8.4
+docker run -d --name bookit-mysql -e MYSQL_ROOT_PASSWORD=cambiar -p 127.0.0.1:3306:3306 mysql:8.4   # solo loopback
 mysql -h 127.0.0.1 -u root -p -e "CREATE DATABASE bookit CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci"
 mysql -h 127.0.0.1 -u root -p bookit < "db/DataBase(1).sql"
 # Opcional, datos de demostración (solo local):
@@ -194,8 +194,11 @@ El frontend tiene `frontend/.env.example` (`VITE_API_BASE_URL=/api`, `VITE_API_B
 **5. Crear el primer empleado** (si no cargó los datos demo). El script lee JSON por la entrada estándar y nunca recibe la contraseña como argumento:
 
 ```bash
-echo '{"nombre_completo":"Ana Admin","telefono":"70000000","correo":"admin@taller.com","rol":"ADMIN","password":"<min 8 caracteres>"}' \
-  | npm run provision:employee --prefix src
+# Crear el archivo con un editor (no con echo) para que la contraseña no quede en el historial de la terminal
+umask 077 && nano empleado.json
+# {"nombre_completo":"Ana Admin","telefono":"70000000","correo":"admin@taller.com","rol":"ADMIN","password":"<min 8 caracteres>"}
+npm run provision:employee --prefix src < empleado.json
+shred -u empleado.json   # o rm empleado.json
 ```
 
 Roles válidos: `SECRETARIA`, `JEFE_TALLER`, `ADMIN`, `DUENO`.
